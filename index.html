@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FAIRTEX-WORK</title>
+<style>
+  :root{
+    --bg:#03050f;
+    --panel:#0a1330;
+    --panel2:#070d24;
+    --border:#26408f;
+    --red1:#d40e1f;
+    --red2:#6e0713;
+    --blue1:#0a1657;
+    --blue2:#1e4fe0;
+    --text:#f2f4ff;
+    --sub:#8fa0d8;
+    --danger:#e0142c;
+    --warn:#f4b93e;
+    --ok:#2fbf6e;
+    --accent:#e0142c;
+    --gold:#f4c542;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;font-family:'Segoe UI',Tahoma,'Noto Sans Thai',sans-serif;color:var(--text);
+    background-color:var(--bg);
+    background-image:
+      repeating-linear-gradient(45deg, rgba(30,79,224,0.16) 0 2px, transparent 2px 46px),
+      repeating-linear-gradient(-45deg, rgba(30,79,224,0.16) 0 2px, transparent 2px 46px),
+      repeating-radial-gradient(circle at 0% 0%, rgba(212,14,31,0.14) 0 2px, transparent 2px 90px),
+      radial-gradient(circle at 50% 0%, rgba(212,14,31,0.20), transparent 55%);
+    background-attachment:fixed;
+    position:relative;
+    overflow-x:hidden;
+  }
+  .web-corner{position:fixed;pointer-events:none;z-index:0;opacity:.35;}
+  .web-corner.tl{top:-40px;left:-40px;width:260px;height:260px;transform:rotate(0deg);}
+  .web-corner.tr{top:-40px;right:-40px;width:260px;height:260px;transform:scaleX(-1);}
+  .web-corner.bl{bottom:-40px;left:-40px;width:220px;height:220px;transform:rotate(90deg);}
+  .web-corner.br{bottom:-40px;right:-40px;width:220px;height:220px;transform:rotate(-90deg) scaleX(-1);}
+  header, nav, main{position:relative;z-index:1;}
+  header{
+    background:linear-gradient(100deg,#000 0%, var(--red1) 32%, var(--red2) 55%, var(--blue1) 100%);
+    padding:14px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;
+    border-bottom:3px solid var(--gold);
+    box-shadow:0 2px 20px rgba(212,14,31,.35);
+  }
+  .brand{display:flex;align-items:center;gap:10px;font-size:24px;font-weight:900;letter-spacing:1px;text-transform:uppercase;text-shadow:0 0 8px rgba(212,14,31,.8), 1px 1px 0 #000, -1px -1px 0 #000;color:#fff;}
+  .brand .logo{width:38px;height:38px;background:#000;border:2px solid var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px;box-shadow:0 0 10px rgba(244,197,66,.6);}
+  .clock-box{background:#000000aa;border-radius:8px;padding:8px 14px;font-size:13px;display:flex;align-items:center;gap:8px;}
+  .periods{display:flex;gap:6px;flex-wrap:wrap;}
+  .period{background:#000000aa;border:1px solid #ffffff22;padding:8px 12px;border-radius:6px;font-size:12px;color:var(--sub);white-space:nowrap;}
+  .period.active{background:linear-gradient(180deg,var(--blue2),var(--blue1));color:#fff;border-color:var(--gold);font-weight:700;}
+  .right-box{display:flex;flex-direction:column;align-items:flex-end;gap:4px;}
+  .right-buttons{display:flex;gap:8px;}
+  .btn{cursor:pointer;border:none;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:600;color:#fff;white-space:nowrap;}
+  .btn-blue{background:linear-gradient(180deg,var(--blue2),var(--blue1));}
+  .btn-red{background:linear-gradient(180deg,var(--red1),var(--red2));}
+  .btn-green{background:var(--ok);}
+  .btn-purple{background:linear-gradient(180deg,var(--blue1),#000);border:1px solid var(--gold);}
+  .btn-outline{background:transparent;border:1px solid var(--border);color:var(--text);}
+  .btn{text-shadow:1px 1px 0 rgba(0,0,0,.5);}
+  .sync-status{font-size:11px;color:var(--gold);}
+  nav{display:flex;gap:8px;padding:14px 20px 0;}
+  .tab{padding:10px 22px;border-radius:8px 8px 0 0;cursor:pointer;font-weight:800;background:var(--panel2);color:var(--sub);border:1px solid var(--border);border-bottom:none;text-transform:uppercase;letter-spacing:.5px;}
+  .tab.active{background:linear-gradient(180deg,var(--red1),var(--red2));color:#fff;border-color:var(--gold);box-shadow:0 -2px 12px rgba(212,14,31,.5);}
+  main{padding:16px 20px 40px;}
+  .toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:var(--panel);padding:12px;border-radius:8px;border:1px solid var(--border);margin-bottom:14px;}
+  .toolbar input, .toolbar select{background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px 10px;font-size:13px;}
+  .toolbar input[type=text]{flex:1;min-width:180px;}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:8px;overflow:hidden;margin-bottom:18px;box-shadow:0 2px 10px rgba(0,0,0,.35);}
+  .card-head{background:linear-gradient(90deg,var(--red1),var(--red2));padding:10px 16px;font-weight:700;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--gold);}
+  .badge-count{background:var(--gold);color:#3a2900;border-radius:50%;min-width:20px;height:20px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;padding:0 5px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{background:#0e1a4a;color:var(--gold);text-align:left;padding:10px 12px;font-size:12px;border-bottom:1px solid var(--border);}
+  td{padding:10px 12px;border-bottom:1px solid #1d2350;vertical-align:top;}
+  tr:hover td{background:#131f52;}
+  .empty-row td{text-align:center;color:var(--sub);padding:20px;}
+  .pill{display:inline-block;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:700;color:#fff;}
+  .pill-high{background:var(--danger);}
+  .pill-mid{background:var(--blue2);}
+  .pill-low{background:var(--ok);color:#043018;}
+  .pill-done{background:var(--ok);color:#043018;}
+  .pill-pending{background:#232b52;color:var(--sub);}
+  .pill-notify{background:var(--gold);color:#3a2900;}
+  .pill-passed{background:#232b52;color:var(--sub);}
+  .dim{color:var(--sub);}
+  .icon-btn{background:none;border:none;color:var(--sub);cursor:pointer;font-size:15px;padding:2px 6px;}
+  .icon-btn:hover{color:#fff;}
+  .row-actions{display:flex;gap:4px;justify-content:flex-end;}
+  .modal-overlay{position:fixed;inset:0;background:#000000cc;display:flex;align-items:center;justify-content:center;z-index:50;}
+  .modal{background:var(--panel);border:1px solid var(--border);border-radius:10px;padding:20px;width:min(480px,92vw);max-height:88vh;overflow:auto;}
+  .modal h3{margin-top:0;}
+  .field{margin-bottom:12px;}
+  .field label{display:block;font-size:12px;color:var(--sub);margin-bottom:4px;}
+  .field input, .field select, .field textarea{width:100%;background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:8px 10px;font-size:13px;}
+  .modal-actions{display:flex;justify-content:flex-end;gap:8px;margin-top:16px;}
+  .dept-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;}
+  .dept-chip{background:var(--panel2);border:1px solid var(--border);border-radius:20px;padding:5px 10px;font-size:12px;display:flex;align-items:center;gap:6px;}
+  .dept-chip button{background:none;border:none;color:var(--danger);cursor:pointer;font-weight:700;}
+  .sub-toolbar{display:flex;gap:8px;justify-content:flex-end;padding:10px 16px;}
+  .config-note{font-size:12px;color:var(--sub);padding:8px 16px;}
+  @media(max-width:720px){
+    header{flex-direction:column;align-items:stretch;}
+    table{font-size:12px;}
+  }
+</style>
+</head>
+<body>
+
+<svg class="web-corner tl" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#ffffff" stroke-width="1.2">
+    <line x1="0" y1="0" x2="200" y2="0"/><line x1="0" y1="0" x2="200" y2="60"/>
+    <line x1="0" y1="0" x2="200" y2="120"/><line x1="0" y1="0" x2="160" y2="200"/>
+    <line x1="0" y1="0" x2="100" y2="200"/><line x1="0" y1="0" x2="40" y2="200"/>
+    <line x1="0" y1="0" x2="0" y2="200"/>
+    <circle cx="0" cy="0" r="30" fill="none"/>
+    <circle cx="0" cy="0" r="65" fill="none"/>
+    <circle cx="0" cy="0" r="105" fill="none"/>
+    <circle cx="0" cy="0" r="150" fill="none"/>
+  </g>
+</svg>
+<svg class="web-corner tr" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g stroke="#ffffff" stroke-width="1.2">
+    <line x1="0" y1="0" x2="200" y2="0"/><line x1="0" y1="0" x2="200" y2="60"/>
+    <line x1="0" y1="0" x2="200" y2="120"/><line x1="0" y1="0" x2="160" y2="200"/>
+    <line x1="0" y1="0" x2="100" y2="200"/><line x1="0" y1="0" x2="40" y2="200"/>
+    <line x1="0" y1="0" x2="0" y2="200"/>
+    <circle cx="0" cy="0" r="30" fill="none"/>
+    <circle cx="0" cy="0" r="65" fill="none"/>
+    <circle cx="0" cy="0" r="105" fill="none"/>
+    <circle cx="0" cy="0" r="150" fill="none"/>
+  </g>
+</svg>
+
+<header>
+  <div class="brand"><div class="logo">🕷️</div>FAIRTEX-WORK</div>
+  <div class="clock-box" id="clockBox">🕐 —</div>
+  <div class="periods" id="periods"></div>
+  <div class="right-box">
+    <div class="right-buttons">
+      <button class="btn btn-blue" onclick="syncFromSheet()">⟳ Sync</button>
+      <button class="btn btn-purple" onclick="pushToSheet()">↑ อัปโหลดขึ้นชีต</button>
+    </div>
+    <div class="sync-status" id="syncStatus">ยังไม่ได้ซิงค์</div>
+  </div>
+</header>
+
+<nav>
+  <div class="tab active" id="tabTodoBtn" onclick="switchTab('todo')">📄 TO DO LIST</div>
+  <div class="tab" id="tabCalBtn" onclick="switchTab('cal')">✳ ปฏิทิน Fairtex</div>
+</nav>
+
+<main>
+  <!-- TO DO LIST TAB -->
+  <div id="tabTodo">
+    <div class="toolbar">
+      <input type="text" id="searchBox" placeholder="🔍 ค้นหา Task / Requester / Ref" oninput="renderTodos()">
+      <select id="filterDept" onchange="renderTodos()"><option value="">ทุกแผนก</option></select>
+      <select id="filterPriority" onchange="renderTodos()">
+        <option value="">ทุก Priority</option>
+        <option value="ด่วนมาก">ด่วนมาก</option>
+        <option value="ปานกลาง">ปานกลาง</option>
+        <option value="ทั่วไป">ทั่วไป</option>
+      </select>
+      <label style="font-size:12px;color:var(--sub);">Due:</label>
+      <input type="date" id="dueFrom" onchange="renderTodos()">
+      <input type="date" id="dueTo" onchange="renderTodos()">
+      <button class="btn btn-blue" onclick="openTaskModal()">＋ เพิ่มงาน</button>
+      <button class="btn btn-outline" onclick="openDeptModal()">⚙ จัดการแผนก</button>
+      <button class="btn btn-green" onclick="exportCSV()">↓ CSV</button>
+      <button class="btn btn-red" onclick="clearAllTodos()">🗑 ล้างงานทั้งหมด</button>
+    </div>
+
+    <div class="card">
+      <div class="card-head">📄 To Do List รายวัน</div>
+      <table>
+        <thead>
+          <tr><th></th><th>Task</th><th>Requester</th><th>Dept</th><th>Ref</th><th>Priority</th><th>Due</th><th>Remarks</th><th></th></tr>
+        </thead>
+        <tbody id="todoBody"></tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-head">🔔 ตารางแจ้งเตือนรวม (งานยังไม่สำเร็จ) <span class="badge-count" id="pendingCount">0</span></div>
+      <table>
+        <thead><tr><th></th><th>Task</th><th>Requester</th><th>Dept</th><th>Priority</th><th>Due</th></tr></thead>
+        <tbody id="pendingBody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CALENDAR TAB -->
+  <div id="tabCal" style="display:none;">
+    <div class="toolbar" style="justify-content:flex-end;">
+      <select id="calMonthFilter" onchange="renderCalendar()">
+        <option value="">ทั้งปี</option>
+        <option value="1">ม.ค.</option><option value="2">ก.พ.</option><option value="3">มี.ค.</option>
+        <option value="4">เม.ย.</option><option value="5">พ.ค.</option><option value="6">มิ.ย.</option>
+        <option value="7">ก.ค.</option><option value="8">ส.ค.</option><option value="9">ก.ย.</option>
+        <option value="10">ต.ค.</option><option value="11">พ.ย.</option><option value="12">ธ.ค.</option>
+      </select>
+      <select id="calYearFilter" onchange="renderCalendar()"></select>
+      <button class="btn btn-red" onclick="clearAllCalendar()">🗑 ล้างข้อมูลทั้งหมด</button>
+    </div>
+
+    <div class="card">
+      <div class="card-head">🔴 Fairtex เข้าเวรวันเสาร์ <button class="btn btn-red" onclick="openDutyModal()">＋ เพิ่มเวร</button></div>
+      <table>
+        <thead><tr><th>วันที่</th><th>ชื่อผู้เข้าเวร</th><th>สถานะการเข้าเวร</th><th>แจ้งเตือน</th><th></th></tr></thead>
+        <tbody id="dutyBody"></tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-head">🔴 Fairtex วันหยุดประจำปี <button class="btn btn-red" onclick="openHolidayModal()">＋ เพิ่มวันหยุด</button></div>
+      <table>
+        <thead><tr><th>ลำดับ</th><th>วัน</th><th>วันที่</th><th>ชื่อของวันหยุด</th><th>แจ้งเตือน</th><th></th></tr></thead>
+        <tbody id="holidayBody"></tbody>
+      </table>
+    </div>
+  </div>
+</main>
+
+<div id="modalRoot"></div>
+
+<script>
+/* ============ CONFIG ============ */
+// วาง Web App URL ที่ได้จากการ Deploy Code.gs ตรงนี้ (ดูวิธีทำใน Code.gs)
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyejKo67y9YrPggAYGRwH2i2dY9yANs6Qvx0HoTcRLeAbjpTrNMTCAPFTr9vSEvw7U2_g/exec";
+
+/* ============ STATE ============ */
+const thaiDays = ["อาทิตย์","จันทร์","อังคาร","พุธ","พฤหัสบดี","ศุกร์","เสาร์"];
+const thaiMonths = ["ม.ค.","ก.พ.","มี.ค.","เม.ย.","พ.ค.","มิ.ย.","ก.ค.","ส.ค.","ก.ย.","ต.ค.","พ.ย.","ธ.ค."];
+
+function uid(){ return Date.now().toString(36)+Math.random().toString(36).slice(2,7); }
+
+const SEED_HOLIDAYS = [
+  {day:'พฤหัสบดี', date:'2026-01-01', name:'วันขึ้นปีใหม่'},
+  {day:'จันทร์',   date:'2026-04-13', name:'วันสงกรานต์'},
+  {day:'อังคาร',   date:'2026-04-14', name:'วันสงกรานต์'},
+  {day:'พุธ',      date:'2026-04-15', name:'วันสงกรานต์'},
+  {day:'พฤหัสบดี', date:'2026-04-16', name:'ชดเชยวันจักรี (6 เม.ย.)'},
+  {day:'ศุกร์',    date:'2026-05-01', name:'วันแรงงานแห่งชาติ'},
+  {day:'จันทร์',   date:'2026-06-01', name:'ชดเชยวันวิสาขบูชา (31 พ.ค.)'},
+  {day:'อังคาร',   date:'2026-07-28', name:'วันเฉลิมพระชนมพรรษาสมเด็จพระเจ้าอยู่หัวรัชกาลที่ 10'},
+  {day:'พุธ',      date:'2026-07-29', name:'วันอาสาฬหบูชา'},
+  {day:'พุธ',      date:'2026-08-12', name:'วันเฉลิมพระชนมพรรษาสมเด็จพระนางเจ้าฯ พระบรมราชินีนาถ'},
+  {day:'ศุกร์',    date:'2026-10-23', name:'วันปิยมหาราช'},
+  {day:'พฤหัสบดี', date:'2026-12-31', name:'วันหยุดสิ้นปี'}
+].map(h=>Object.assign({id:uid()}, h));
+
+const SEED_DUTY = [
+  {date:'2026-03-07', name:'TUU'},
+  {date:'2026-03-21', name:'P.PAT [ TUU ]'},
+  {date:'2026-04-18', name:'P.Praew [ TUU ]'},
+  {date:'2026-05-09', name:'TUU'},
+  {date:'2026-06-20', name:'P.Praew [ TUU ]'},
+  {date:'2026-07-11', name:'TUU'},
+  {date:'2026-08-22', name:'P.Praew [ TUU ]'},
+  {date:'2026-09-12', name:'TUU'},
+  {date:'2026-10-24', name:'P.Praew [ TUU ]'},
+  {date:'2026-11-14', name:'TUU'}
+].map(d=>Object.assign({id:uid()}, d));
+
+let state = {
+  todos: [],
+  depts: ["วางแผนการผลิต","จัดซื้อ","คลังสินค้า","บัญชี"],
+  saturdayDuty: SEED_DUTY.slice(),
+  holidays: SEED_HOLIDAYS.slice()
+};
+
+/* ============ CLOCK / PERIODS ============ */
+function updateClock(){
+  const now = new Date();
+  const beYear = now.getFullYear()+543;
+  const dayName = thaiDays[now.getDay()];
+  const dateStr = `วัน${dayName} ที่ ${now.getDate()} ${thaiMonths[now.getMonth()]} ${beYear}`;
+  const timeStr = now.toLocaleTimeString('th-TH',{hour12:false});
+  document.getElementById('clockBox').textContent = `🕐 ${dateStr} • ${timeStr}`;
+
+  const h = now.getHours()+now.getMinutes()/60;
+  const periods = [
+    {label:"09.00-11.59 เช้า", from:9, to:12},
+    {label:"12.00-13.00 พักเที่ยง", from:12, to:13},
+    {label:"13.01-18.00 บ่าย", from:13.0167, to:18},
+    {label:"18.01-08.59 นอกเวลา", from:18.0167, to:33} // wraps past midnight
+  ];
+  let hh = h; if(hh < 9) hh += 24; // normalize for the overnight period
+  const box = document.getElementById('periods');
+  box.innerHTML = periods.map(p=>{
+    const active = (hh>=p.from && hh<p.to);
+    return `<div class="period ${active?'active':''}">${p.label}</div>`;
+  }).join('');
+}
+setInterval(updateClock,1000); updateClock();
+
+/* ============ TABS ============ */
+function switchTab(t){
+  document.getElementById('tabTodo').style.display = t==='todo' ? '' : 'none';
+  document.getElementById('tabCal').style.display = t==='cal' ? '' : 'none';
+  document.getElementById('tabTodoBtn').classList.toggle('active', t==='todo');
+  document.getElementById('tabCalBtn').classList.toggle('active', t==='cal');
+}
+
+/* ============ SYNC ============ */
+async function syncFromSheet(){
+  if(SCRIPT_URL.includes("PASTE_YOUR")){ alert("ยังไม่ได้ตั้งค่า SCRIPT_URL — ดูวิธีทำใน Code.gs"); return; }
+  document.getElementById('syncStatus').textContent = "กำลังซิงค์...";
+  try{
+    const res = await fetch(SCRIPT_URL);
+    const data = await res.json();
+    state.todos = (data.Todos||[]).map(normalizeTodo);
+    state.saturdayDuty = (data.SaturdayDuty||[]).length ? data.SaturdayDuty.map(normalizeDuty) : SEED_DUTY.slice();
+    state.holidays = (data.Holidays||[]).length ? data.Holidays.map(normalizeHoliday) : SEED_HOLIDAYS.slice();
+    if(data.Depts && data.Depts.length) state.depts = data.Depts.map(d=>d.name).filter(Boolean);
+    renderAll();
+    document.getElementById('syncStatus').textContent = "✓ ซิงค์สำเร็จ " + new Date().toLocaleTimeString('th-TH',{hour12:false});
+  }catch(err){
+    document.getElementById('syncStatus').textContent = "✗ ซิงค์ล้มเหลว";
+    console.error(err);
+  }
+}
+
+async function pushToSheet(){
+  if(SCRIPT_URL.includes("PASTE_YOUR")){ alert("ยังไม่ได้ตั้งค่า SCRIPT_URL — ดูวิธีทำใน Code.gs"); return; }
+  document.getElementById('syncStatus').textContent = "กำลังอัปโหลด...";
+  try{
+    const payload = {
+      Todos: state.todos,
+      Depts: state.depts.map(name=>({id:uid(),name})),
+      SaturdayDuty: state.saturdayDuty,
+      Holidays: state.holidays
+    };
+    await fetch(SCRIPT_URL, {method:'POST', body: JSON.stringify(payload)});
+    document.getElementById('syncStatus').textContent = "✓ อัปโหลดสำเร็จ " + new Date().toLocaleTimeString('th-TH',{hour12:false});
+  }catch(err){
+    document.getElementById('syncStatus').textContent = "✗ อัปโหลดล้มเหลว";
+    console.error(err);
+  }
+}
+
+function normalizeTodo(t){ return {id:t.id||uid(), task:t.task||'', requester:t.requester||'', dept:t.dept||'', ref:t.ref||'', priority:t.priority||'ทั่วไป', due:t.due||'', remarks:t.remarks||'', done: t.done===true||t.done==='TRUE'||t.done===1}; }
+function normalizeDuty(d){ return {id:d.id||uid(), date:d.date||'', name:d.name||'', status:d.status||'', notify:d.notify||''}; }
+function normalizeHoliday(h){ return {id:h.id||uid(), order:h.order||'', day:h.day||'', date:h.date||'', name:h.name||'', notify:h.notify||''}; }
+
+/* ============ RENDER: TODOS ============ */
+function priorityPill(p){
+  const cls = p==='ด่วนมาก' ? 'pill-high' : (p==='ปานกลาง' ? 'pill-mid' : 'pill-low');
+  return `<span class="pill ${cls}">${p}</span>`;
+}
+
+function fillDeptFilter(){
+  const sel = document.getElementById('filterDept');
+  const cur = sel.value;
+  sel.innerHTML = '<option value="">ทุกแผนก</option>' + state.depts.map(d=>`<option value="${d}">${d}</option>`).join('');
+  sel.value = cur;
+}
+
+function renderTodos(){
+  fillDeptFilter();
+  const q = document.getElementById('searchBox').value.trim().toLowerCase();
+  const dept = document.getElementById('filterDept').value;
+  const pr = document.getElementById('filterPriority').value;
+  const from = document.getElementById('dueFrom').value;
+  const to = document.getElementById('dueTo').value;
+
+  let rows = state.todos.filter(t=>{
+    if(q && !(t.task.toLowerCase().includes(q) || t.requester.toLowerCase().includes(q) || t.ref.toLowerCase().includes(q))) return false;
+    if(dept && t.dept!==dept) return false;
+    if(pr && t.priority!==pr) return false;
+    if(from && t.due && t.due < from) return false;
+    if(to && t.due && t.due > to) return false;
+    return true;
+  });
+
+  const body = document.getElementById('todoBody');
+  body.innerHTML = rows.length ? rows.map(t=>`
+    <tr>
+      <td><input type="checkbox" ${t.done?'checked':''} onchange="toggleDone('${t.id}')"></td>
+      <td>${esc(t.task)}</td>
+      <td>${esc(t.requester)}</td>
+      <td>${esc(t.dept)}</td>
+      <td>${esc(t.ref)}</td>
+      <td>${priorityPill(t.priority)}</td>
+      <td>${fmtDue(t.due)}</td>
+      <td>${esc(t.remarks)}</td>
+      <td><div class="row-actions">
+        <button class="icon-btn" onclick="openTaskModal('${t.id}')">✏️</button>
+        <button class="icon-btn" onclick="deleteTodo('${t.id}')">🗑️</button>
+      </div></td>
+    </tr>`).join('') : `<tr class="empty-row"><td colspan="9">ไม่มีข้อมูล</td></tr>`;
+
+  const pending = state.todos.filter(t=>!t.done);
+  document.getElementById('pendingCount').textContent = pending.length;
+  const pbody = document.getElementById('pendingBody');
+  pbody.innerHTML = pending.length ? pending.map(t=>`
+    <tr>
+      <td><input type="checkbox" onchange="toggleDone('${t.id}')"></td>
+      <td>${esc(t.task)}</td>
+      <td>${esc(t.requester)}</td>
+      <td>${esc(t.dept)}</td>
+      <td>${priorityPill(t.priority)}</td>
+      <td>${fmtDue(t.due)}</td>
+    </tr>`).join('') : `<tr class="empty-row"><td colspan="6">ไม่มีงานค้าง</td></tr>`;
+}
+
+function fmtDue(d){
+  if(!d) return '';
+  const dt = new Date(d);
+  if(isNaN(dt)) return d;
+  return dt.toISOString().slice(0,10);
+}
+function esc(s){ return (s||'').toString().replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+function toggleDone(id){
+  const t = state.todos.find(x=>x.id===id);
+  if(t){ t.done = !t.done; renderTodos(); }
+}
+function deleteTodo(id){
+  if(!confirm('ลบงานนี้?')) return;
+  state.todos = state.todos.filter(x=>x.id!==id);
+  renderTodos();
+}
+function clearAllTodos(){
+  if(!confirm('ล้างงานทั้งหมด? การกระทำนี้ย้อนกลับไม่ได้')) return;
+  state.todos = [];
+  renderTodos();
+}
+function exportCSV(){
+  const headers = ['Task','Requester','Dept','Ref','Priority','Due','Remarks','Done'];
+  const lines = [headers.join(',')].concat(state.todos.map(t=>
+    [t.task,t.requester,t.dept,t.ref,t.priority,t.due,t.remarks,t.done].map(v=>`"${(v||'').toString().replace(/"/g,'""')}"`).join(',')
+  ));
+  const blob = new Blob(["\uFEFF"+lines.join('\n')], {type:'text/csv;charset=utf-8;'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'todolist.csv';
+  a.click();
+}
+
+/* ============ MODALS: TASK ============ */
+function openTaskModal(id){
+  const editing = id ? state.todos.find(x=>x.id===id) : null;
+  const deptOptions = state.depts.map(d=>`<option value="${d}" ${editing&&editing.dept===d?'selected':''}>${d}</option>`).join('');
+  document.getElementById('modalRoot').innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>${editing?'แก้ไขงาน':'เพิ่มงาน'}</h3>
+      <div class="field"><label>Task</label><input id="f_task" value="${editing?esc(editing.task):''}"></div>
+      <div class="field"><label>Requester</label><input id="f_requester" value="${editing?esc(editing.requester):''}"></div>
+      <div class="field"><label>Dept</label><select id="f_dept">${deptOptions}</select></div>
+      <div class="field"><label>Ref</label><input id="f_ref" value="${editing?esc(editing.ref):''}"></div>
+      <div class="field"><label>Priority</label>
+        <select id="f_priority">
+          <option ${editing&&editing.priority==='ด่วนมาก'?'selected':''}>ด่วนมาก</option>
+          <option ${editing&&editing.priority==='ปานกลาง'?'selected':''}>ปานกลาง</option>
+          <option ${(!editing)||editing.priority==='ทั่วไป'?'selected':''}>ทั่วไป</option>
+        </select>
+      </div>
+      <div class="field"><label>Due</label><input type="date" id="f_due" value="${editing&&editing.due?editing.due.slice(0,10):''}"></div>
+      <div class="field"><label>Remarks</label><textarea id="f_remarks" rows="3">${editing?esc(editing.remarks):''}</textarea></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal()">ยกเลิก</button>
+        <button class="btn btn-blue" onclick="saveTask('${editing?editing.id:''}')">บันทึก</button>
+      </div>
+    </div>
+  </div>`;
+}
+function saveTask(id){
+  const val = {
+    task: document.getElementById('f_task').value.trim(),
+    requester: document.getElementById('f_requester').value.trim(),
+    dept: document.getElementById('f_dept').value,
+    ref: document.getElementById('f_ref').value.trim(),
+    priority: document.getElementById('f_priority').value,
+    due: document.getElementById('f_due').value,
+    remarks: document.getElementById('f_remarks').value.trim()
+  };
+  if(!val.task){ alert('กรุณากรอก Task'); return; }
+  if(id){
+    Object.assign(state.todos.find(x=>x.id===id), val);
+  }else{
+    state.todos.push(Object.assign({id:uid(), done:false}, val));
+  }
+  closeModal(); renderTodos();
+}
+
+/* ============ MODAL: DEPT MANAGE ============ */
+function openDeptModal(){
+  render();
+  function render(){
+    document.getElementById('modalRoot').innerHTML = `
+    <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+      <div class="modal">
+        <h3>จัดการแผนก</h3>
+        <div class="field"><label>เพิ่มแผนกใหม่</label>
+          <input id="f_newdept" placeholder="ชื่อแผนก" onkeydown="if(event.key==='Enter') addDept()">
+        </div>
+        <button class="btn btn-blue" onclick="addDept()">＋ เพิ่ม</button>
+        <div class="dept-list">
+          ${state.depts.map(d=>`<div class="dept-chip">${esc(d)} <button onclick="removeDept('${esc(d)}')">×</button></div>`).join('')}
+        </div>
+        <div class="modal-actions"><button class="btn btn-outline" onclick="closeModal()">ปิด</button></div>
+      </div>
+    </div>`;
+  }
+  window.addDept = function(){
+    const v = document.getElementById('f_newdept').value.trim();
+    if(v && !state.depts.includes(v)) state.depts.push(v);
+    render(); renderTodos();
+  };
+  window.removeDept = function(d){
+    state.depts = state.depts.filter(x=>x!==d);
+    render(); renderTodos();
+  };
+}
+
+function closeModal(){ document.getElementById('modalRoot').innerHTML = ''; }
+
+/* ============ CALENDAR TAB ============ */
+function fillYearFilter(){
+  const sel = document.getElementById('calYearFilter');
+  const curBE = new Date().getFullYear()+543;
+  const years = [];
+  for(let y=curBE-1; y<=curBE+2; y++) years.push(y);
+  sel.innerHTML = years.map(y=>`<option value="${y}" ${y===curBE?'selected':''}>${y}</option>`).join('');
+}
+
+function thaiDate(dstr){
+  const d = new Date(dstr);
+  if(isNaN(d)) return dstr||'';
+  return `${d.getDate()} ${thaiMonths[d.getMonth()]} ${d.getFullYear()+543}`;
+}
+function thaiDateWithDay(dstr){
+  const d = new Date(dstr);
+  if(isNaN(d)) return dstr||'';
+  return `${thaiDays[d.getDay()]} ${d.getDate()} ${thaiMonths[d.getMonth()]} ${d.getFullYear()+543}`;
+}
+function dutyStatusCell(dstr){
+  const today = new Date(); today.setHours(0,0,0,0);
+  const d = new Date(dstr); d.setHours(0,0,0,0);
+  if(isNaN(d)) return '<span class="dim">—</span>';
+  return d < today
+    ? '<span class="pill pill-done">✓ เข้าเวรแล้ว</span>'
+    : '<span class="pill pill-pending">ยังไม่เข้าเวร</span>';
+}
+function dutyNotifyCell(dstr){
+  const today = new Date(); today.setHours(0,0,0,0);
+  const d = new Date(dstr); d.setHours(0,0,0,0);
+  if(isNaN(d)) return '<span class="dim">—</span>';
+  const diff = Math.round((d-today)/86400000);
+  if(diff >= 0 && diff <= 7) return `<span class="pill pill-notify">🎁 อีก ${diff} วัน</span>`;
+  return '<span class="dim">—</span>';
+}
+function holidayNotifyCell(dstr){
+  const today = new Date(); today.setHours(0,0,0,0);
+  const d = new Date(dstr); d.setHours(0,0,0,0);
+  if(isNaN(d)) return '<span class="dim">—</span>';
+  return d < today
+    ? '<span class="pill pill-passed">ผ่านไปแล้ว</span>'
+    : '<span class="dim">—</span>';
+}
+
+function renderCalendar(){
+  const month = document.getElementById('calMonthFilter').value;
+  const yearBE = document.getElementById('calYearFilter').value;
+  const yearAD = yearBE ? (parseInt(yearBE)-543) : null;
+
+  const filterByDate = (dstr)=>{
+    if(!dstr) return true;
+    const d = new Date(dstr);
+    if(isNaN(d)) return true;
+    if(yearAD && d.getFullYear()!==yearAD) return false;
+    if(month && (d.getMonth()+1)!==parseInt(month)) return false;
+    return true;
+  };
+
+  const duty = state.saturdayDuty.filter(d=>filterByDate(d.date)).sort((a,b)=>a.date.localeCompare(b.date));
+  const dutyBody = document.getElementById('dutyBody');
+  dutyBody.innerHTML = duty.length ? duty.map(d=>`
+    <tr>
+      <td>${thaiDateWithDay(d.date)}</td>
+      <td>${esc(d.name)}</td>
+      <td>${dutyStatusCell(d.date)}</td>
+      <td>${dutyNotifyCell(d.date)}</td>
+      <td><button class="icon-btn" onclick="deleteDuty('${d.id}')">🗑️</button></td>
+    </tr>`).join('') : `<tr class="empty-row"><td colspan="5">ไม่มีข้อมูล</td></tr>`;
+
+  const hol = state.holidays.filter(h=>filterByDate(h.date)).sort((a,b)=>a.date.localeCompare(b.date));
+  const holBody = document.getElementById('holidayBody');
+  holBody.innerHTML = hol.length ? hol.map((h,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td>${esc(h.day)}</td>
+      <td>${thaiDate(h.date)}</td>
+      <td>${esc(h.name)}</td>
+      <td>${holidayNotifyCell(h.date)}</td>
+      <td><button class="icon-btn" onclick="deleteHoliday('${h.id}')">🗑️</button></td>
+    </tr>`).join('') : `<tr class="empty-row"><td colspan="6">ไม่มีข้อมูล</td></tr>`;
+}
+
+function deleteDuty(id){ state.saturdayDuty = state.saturdayDuty.filter(x=>x.id!==id); renderCalendar(); }
+function deleteHoliday(id){ state.holidays = state.holidays.filter(x=>x.id!==id); renderCalendar(); }
+function clearAllCalendar(){
+  if(!confirm('ล้างข้อมูลปฏิทินทั้งหมด?')) return;
+  state.saturdayDuty = []; state.holidays = [];
+  renderCalendar();
+}
+
+/* ============ MODAL: DUTY ============ */
+function openDutyModal(){
+  document.getElementById('modalRoot').innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>เพิ่มเวรวันเสาร์</h3>
+      <div class="field"><label>วันที่</label><input type="date" id="d_date"></div>
+      <div class="field"><label>ชื่อผู้เข้าเวร</label><input id="d_name"></div>
+      <div class="field"><label>สถานะการเข้าเวร</label><input id="d_status" placeholder="เช่น ยืนยันแล้ว"></div>
+      <div class="field"><label>แจ้งเตือน</label><input id="d_notify" placeholder="เช่น ล่วงหน้า 1 วัน"></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal()">ยกเลิก</button>
+        <button class="btn btn-blue" onclick="saveDuty()">บันทึก</button>
+      </div>
+    </div>
+  </div>`;
+}
+function saveDuty(){
+  const date = document.getElementById('d_date').value;
+  const name = document.getElementById('d_name').value.trim();
+  if(!date || !name){ alert('กรุณากรอกวันที่และชื่อผู้เข้าเวร'); return; }
+  state.saturdayDuty.push({
+    id: uid(), date, name,
+    status: document.getElementById('d_status').value.trim(),
+    notify: document.getElementById('d_notify').value.trim()
+  });
+  closeModal(); renderCalendar();
+}
+
+/* ============ MODAL: HOLIDAY ============ */
+function openHolidayModal(){
+  document.getElementById('modalRoot').innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>เพิ่มวันหยุดประจำปี</h3>
+      <div class="field"><label>ลำดับ</label><input id="h_order" value="${state.holidays.length+1}"></div>
+      <div class="field"><label>วันที่</label><input type="date" id="h_date" onchange="autoFillDay()"></div>
+      <div class="field"><label>วัน</label><input id="h_day" placeholder="เช่น จันทร์"></div>
+      <div class="field"><label>ชื่อของวันหยุด</label><input id="h_name"></div>
+      <div class="field"><label>แจ้งเตือน</label><input id="h_notify"></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal()">ยกเลิก</button>
+        <button class="btn btn-blue" onclick="saveHoliday()">บันทึก</button>
+      </div>
+    </div>
+  </div>`;
+}
+function autoFillDay(){
+  const v = document.getElementById('h_date').value;
+  if(!v) return;
+  const d = new Date(v);
+  document.getElementById('h_day').value = thaiDays[d.getDay()];
+}
+function saveHoliday(){
+  const date = document.getElementById('h_date').value;
+  const name = document.getElementById('h_name').value.trim();
+  if(!date || !name){ alert('กรุณากรอกวันที่และชื่อวันหยุด'); return; }
+  state.holidays.push({
+    id: uid(),
+    order: document.getElementById('h_order').value.trim(),
+    day: document.getElementById('h_day').value.trim(),
+    date,
+    name,
+    notify: document.getElementById('h_notify').value.trim()
+  });
+  closeModal(); renderCalendar();
+}
+
+/* ============ INIT ============ */
+function renderAll(){ renderTodos(); renderCalendar(); }
+fillYearFilter();
+renderAll();
+if(!SCRIPT_URL.includes("PASTE_YOUR")) syncFromSheet();
+</script>
+</body>
+</html>
