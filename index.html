@@ -487,8 +487,8 @@ function renderCompletedSummary(){
   container.innerHTML = groupList.map(g=>`
     <table>
       <thead>
-        <tr><th colspan="6" class="month-group-head">${g.label} — สำเร็จ ${g.rows.length} งาน</th></tr>
-        <tr><th>Task</th><th>Requester</th><th>Dept</th><th>Priority</th><th>Due</th><th>วันที่สำเร็จ</th></tr>
+        <tr><th colspan="7" class="month-group-head">${g.label} — สำเร็จ ${g.rows.length} งาน</th></tr>
+        <tr><th>Task</th><th>Requester</th><th>Dept</th><th>Priority</th><th>Due</th><th>วันที่สำเร็จ</th><th>Remark</th></tr>
       </thead>
       <tbody>
         ${g.rows.map(t=>`
@@ -499,6 +499,7 @@ function renderCompletedSummary(){
           <td>${priorityPill(t.priority)}</td>
           <td>${fmtDue(t.due)}</td>
           <td>${fmtDue(t._d)}</td>
+          <td>${esc(t.remarks)}</td>
         </tr>`).join('')}
       </tbody>
     </table>`).join('');
