@@ -90,6 +90,8 @@
   .dim{color:var(--sub);}
   .pill-btn{border:none;cursor:pointer;font-family:inherit;transition:filter .15s;}
   .pill-btn:hover{filter:brightness(1.15);}
+  .card-head select{background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:5px 8px;font-size:12px;}
+  .month-group-head{background:#132057;color:var(--gold);font-weight:700;padding:8px 12px;border-bottom:1px solid var(--border);}
   .icon-btn{background:none;border:none;color:var(--sub);cursor:pointer;font-size:15px;padding:2px 6px;}
   .icon-btn:hover{color:#fff;}
   .row-actions{display:flex;gap:4px;justify-content:flex-end;}
@@ -193,6 +195,23 @@
         <thead><tr><th></th><th>Task</th><th>Requester</th><th>Dept</th><th>Priority</th><th>Due</th></tr></thead>
         <tbody id="pendingBody"></tbody>
       </table>
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        📊 สรุปงานที่สำเร็จรายเดือน
+        <div style="display:flex;gap:6px;">
+          <select id="sumMonthFilter" onchange="renderTodos()">
+            <option value="">ทั้งปี</option>
+            <option value="1">ม.ค.</option><option value="2">ก.พ.</option><option value="3">มี.ค.</option>
+            <option value="4">เม.ย.</option><option value="5">พ.ค.</option><option value="6">มิ.ย.</option>
+            <option value="7">ก.ค.</option><option value="8">ส.ค.</option><option value="9">ก.ย.</option>
+            <option value="10">ต.ค.</option><option value="11">พ.ย.</option><option value="12">ธ.ค.</option>
+          </select>
+          <select id="sumYearFilter" onchange="renderTodos()"></select>
+        </div>
+      </div>
+      <div id="summaryContainer"></div>
     </div>
   </div>
 
@@ -346,7 +365,8 @@ async function pushToSheet(){
   }
 }
 
-function normalizeTodo(t){ return {id:t.id||uid(), task:t.task||'', requester:t.requester||'', dept:t.dept||'', ref:t.ref||'', priority:t.priority||'ทั่วไป', due:t.due||'', remarks:t.remarks||'', done: t.done===true||t.done==='TRUE'||t.done===1}; }
+function normalizeTodo(t){ return {id:t.id||uid(), task:t.task||'', requester:t.requester||'', dept:t.dept||'', ref:t.ref||'', priority:t.priority||'ทั่วไป', due:t.due||'', remarks:t.remarks||'', done: t.done===true||t.done==='TRUE'||t.done===1, completedAt: t.completedAt||''}; }
+function todayISO(){ return new Date().toISOString().slice(0,10); }
 function normalizeDuty(d){
   const today = new Date(); today.setHours(0,0,0,0);
   const dd = new Date(d.date); dd.setHours(0,0,0,0);
@@ -417,6 +437,71 @@ function renderTodos(){
       <td>${priorityPill(t.priority)}</td>
       <td>${fmtDue(t.due)}</td>
     </tr>`).join('') : `<tr class="empty-row"><td colspan="6">ไม่มีงานค้าง</td></tr>`;
+
+  renderCompletedSummary();
+}
+
+function fillSummaryYearFilter(){
+  const sel = document.getElementById('sumYearFilter');
+  if(!sel || sel.options.length) return;
+  const curBE = new Date().getFullYear()+543;
+  const years = [];
+  for(let y=curBE-2; y<=curBE+1; y++) years.push(y);
+  sel.innerHTML = '<option value="">ทุกปี</option>' + years.map(y=>`<option value="${y}" ${y===curBE?'selected':''}>${y}</option>`).join('');
+}
+
+function renderCompletedSummary(){
+  fillSummaryYearFilter();
+  const month = document.getElementById('sumMonthFilter').value;
+  const yearBE = document.getElementById('sumYearFilter').value;
+  const yearAD = yearBE ? (parseInt(yearBE)-543) : null;
+
+  let items = state.todos
+    .filter(t=>t.done)
+    .map(t=>Object.assign({_d: t.completedAt || t.due}, t))
+    .filter(t=>t._d && !isNaN(new Date(t._d)));
+
+  items = items.filter(t=>{
+    const d = new Date(t._d);
+    if(yearAD && d.getFullYear()!==yearAD) return false;
+    if(month && (d.getMonth()+1)!==parseInt(month)) return false;
+    return true;
+  });
+
+  const container = document.getElementById('summaryContainer');
+  if(!items.length){
+    container.innerHTML = `<table><tbody><tr class="empty-row"><td>ไม่มีงานที่สำเร็จในช่วงที่เลือก</td></tr></tbody></table>`;
+    return;
+  }
+
+  const groups = {};
+  items.forEach(t=>{
+    const d = new Date(t._d);
+    const key = d.getFullYear()+'-'+d.getMonth();
+    if(!groups[key]) groups[key] = {label:`${thaiMonths[d.getMonth()]} ${d.getFullYear()+543}`, sortKey:d.getFullYear()*100+d.getMonth(), rows:[]};
+    groups[key].rows.push(t);
+  });
+  const groupList = Object.values(groups).sort((a,b)=>b.sortKey-a.sortKey);
+  groupList.forEach(g=>g.rows.sort((a,b)=>a._d.localeCompare(b._d)));
+
+  container.innerHTML = groupList.map(g=>`
+    <table>
+      <thead>
+        <tr><th colspan="6" class="month-group-head">${g.label} — สำเร็จ ${g.rows.length} งาน</th></tr>
+        <tr><th>Task</th><th>Requester</th><th>Dept</th><th>Priority</th><th>Due</th><th>วันที่สำเร็จ</th></tr>
+      </thead>
+      <tbody>
+        ${g.rows.map(t=>`
+        <tr>
+          <td>${esc(t.task)}</td>
+          <td>${esc(t.requester)}</td>
+          <td>${esc(t.dept)}</td>
+          <td>${priorityPill(t.priority)}</td>
+          <td>${fmtDue(t.due)}</td>
+          <td>${fmtDue(t._d)}</td>
+        </tr>`).join('')}
+      </tbody>
+    </table>`).join('');
 }
 
 function fmtDue(d){
@@ -429,7 +514,12 @@ function esc(s){ return (s||'').toString().replace(/[&<>"]/g, c=>({'&':'&amp;','
 
 function toggleDone(id){
   const t = state.todos.find(x=>x.id===id);
-  if(t){ t.done = !t.done; renderTodos(); }
+  if(t){
+    t.done = !t.done;
+    if(t.done) t.completedAt = t.completedAt || todayISO();
+    else t.completedAt = '';
+    renderTodos();
+  }
 }
 function deleteTodo(id){
   if(!confirm('ลบงานนี้?')) return;
