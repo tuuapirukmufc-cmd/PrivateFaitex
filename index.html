@@ -92,6 +92,14 @@
   .pill-btn:hover{filter:brightness(1.15);}
   .card-head select{background:var(--panel2);border:1px solid var(--border);color:var(--text);border-radius:6px;padding:5px 8px;font-size:12px;}
   .month-group-head{background:#132057;color:var(--gold);font-weight:700;padding:8px 12px;border-bottom:1px solid var(--border);}
+  .fin-subtab{padding:8px 14px;font-size:12px;border-radius:6px;}
+  .cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px;}
+  .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
+  .stat-card{background:var(--panel);border:1px solid var(--border);border-radius:8px;padding:12px 14px;}
+  .stat-card .lbl{font-size:11px;color:var(--sub);margin-bottom:4px;}
+  .stat-card .val{font-size:18px;font-weight:800;}
+  .val-g{color:var(--ok);} .val-r{color:var(--danger);} .val-gold{color:var(--gold);} .val-b{color:var(--blue2);}
+  @media(max-width:900px){ .cards4{grid-template-columns:repeat(2,1fr);} .cards3{grid-template-columns:repeat(2,1fr);} }
   .icon-btn{background:none;border:none;color:var(--sub);cursor:pointer;font-size:15px;padding:2px 6px;}
   .icon-btn:hover{color:#fff;}
   .row-actions{display:flex;gap:4px;justify-content:flex-end;}
@@ -156,6 +164,7 @@
 <nav>
   <div class="tab active" id="tabTodoBtn" onclick="switchTab('todo')">📄 TO DO LIST</div>
   <div class="tab" id="tabCalBtn" onclick="switchTab('cal')">✳ ปฏิทิน Fairtex</div>
+  <div class="tab" id="tabFinBtn" onclick="switchTab('fin')">💰 การเงิน</div>
 </nav>
 
 <main>
@@ -245,6 +254,152 @@
       </table>
     </div>
   </div>
+
+  <!-- FINANCE TAB -->
+  <div id="tabFin" style="display:none;">
+    <div class="toolbar" id="finSubNav">
+      <button class="tab fin-subtab active" data-p="findash" onclick="switchFinPage('findash')">★ ภาพรวม</button>
+      <button class="tab fin-subtab" data-p="fintodo" onclick="switchFinPage('fintodo')">📝 สิ่งที่ต้องทำ</button>
+      <button class="tab fin-subtab" data-p="finbudget" onclick="switchFinPage('finbudget')">🧾 รายรับ-รายจ่าย</button>
+      <button class="tab fin-subtab" data-p="findebt" onclick="switchFinPage('findebt')">📉 หนี้สิน</button>
+      <button class="tab fin-subtab" data-p="fininvest" onclick="switchFinPage('fininvest')">💹 การลงทุน</button>
+      <button class="tab fin-subtab" data-p="finsub" onclick="switchFinPage('finsub')">🎫 สมาชิกแอพ</button>
+      <button class="tab fin-subtab" data-p="finlogin" onclick="switchFinPage('finlogin')">🔐 User-Login</button>
+    </div>
+
+    <!-- FIN: DASHBOARD -->
+    <div id="findash" class="finpage">
+      <div class="cards4" id="finDashCards"></div>
+    </div>
+
+    <!-- FIN: PERSONAL TODO -->
+    <div id="fintodo" class="finpage" style="display:none;">
+      <div class="toolbar">
+        <button class="btn btn-blue" onclick="openLifeTodoModal()">＋ เพิ่มรายการ</button>
+        <button class="btn btn-red" onclick="clearArr('lifeTodos','รายการที่ต้องทำ')">🗑 ล้างทั้งหมด</button>
+      </div>
+      <div class="card">
+        <div class="card-head">📝 รายการที่ต้องทำ</div>
+        <table>
+          <thead><tr><th></th><th>ชื่อรายการ</th><th>วันครบกำหนด</th><th>ราคา</th><th>ความสำคัญ</th><th>สถานที่</th><th>หมายเหตุ</th><th></th></tr></thead>
+          <tbody id="lifeTodoBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FIN: BUDGET -->
+    <div id="finbudget" class="finpage" style="display:none;">
+      <div class="toolbar" style="justify-content:flex-end;">
+        <select id="budMonthFilter" onchange="renderBudget()">
+          <option value="">ทั้งปี</option>
+          <option value="1">ม.ค.</option><option value="2">ก.พ.</option><option value="3">มี.ค.</option>
+          <option value="4">เม.ย.</option><option value="5">พ.ค.</option><option value="6">มิ.ย.</option>
+          <option value="7">ก.ค.</option><option value="8">ส.ค.</option><option value="9">ก.ย.</option>
+          <option value="10">ต.ค.</option><option value="11">พ.ย.</option><option value="12">ธ.ค.</option>
+        </select>
+        <select id="budYearFilter" onchange="renderBudget()"></select>
+      </div>
+      <div class="cards4" id="budgetCards"></div>
+      <div class="card">
+        <div class="card-head">🟢 รายรับ <button class="btn btn-blue" onclick="openIncomeModal()">＋ เพิ่มรายรับ</button></div>
+        <table>
+          <thead><tr><th></th><th>รายการ</th><th>หมวด</th><th>วันที่</th><th>จำนวน</th><th>รับแล้ว</th><th>หมายเหตุ</th><th></th></tr></thead>
+          <tbody id="incomeBody"></tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-head">🔴 รายจ่าย <button class="btn btn-blue" onclick="openExpenseModal()">＋ เพิ่มรายจ่าย</button></div>
+        <table>
+          <thead><tr><th></th><th>รายการ</th><th>หมวด</th><th>ครบกำหนด</th><th>จำนวน</th><th>จ่ายแล้ว</th><th>หมายเหตุ</th><th></th></tr></thead>
+          <tbody id="expenseBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FIN: DEBT -->
+    <div id="findebt" class="finpage" style="display:none;">
+      <div class="toolbar">
+        <button class="btn btn-blue" onclick="openDebtModal()">＋ เพิ่มบัตร/สินเชื่อ</button>
+        <button class="btn btn-red" onclick="clearArr('debts','บัตร/สินเชื่อ')">🗑 ล้างทั้งหมด</button>
+      </div>
+      <div class="cards3" id="debtCards"></div>
+      <div class="card">
+        <div class="card-head">📉 บัตร / สินเชื่อ</div>
+        <table>
+          <thead><tr><th>ชื่อ</th><th>ประเภท</th><th>วงเงิน</th><th>เบิกใช้แล้ว</th><th>คงเหลือ</th><th>ผ่อน/เดือน</th><th>ครบกำหนด (วันที่)</th><th>หมายเหตุ</th><th></th></tr></thead>
+          <tbody id="debtBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FIN: INVEST -->
+    <div id="fininvest" class="finpage" style="display:none;">
+      <div class="cards4" id="investSummary"></div>
+
+      <div class="card">
+        <div class="card-head">📈 หุ้นปันผล <button class="btn btn-blue" onclick="openStockModal()">＋ เพิ่มหุ้น</button></div>
+        <table>
+          <thead><tr><th>หุ้น/กองทุน</th><th>เงินลงทุน</th><th>Yield</th><th>ปันผล/ปี</th><th>หมายเหตุ</th><th></th></tr></thead>
+          <tbody id="stockBody"></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          🟡 ออมทอง
+          <div style="display:flex;gap:6px;align-items:center;">
+            <input type="number" id="goldPriceInput" placeholder="ราคาทอง/บาท ปัจจุบัน" style="width:150px;" onchange="renderInvest()">
+            <button class="btn btn-blue" onclick="openGoldModal()">＋ เพิ่มออมทอง</button>
+          </div>
+        </div>
+        <table>
+          <thead><tr><th>วันที่ซื้อ</th><th>น้ำหนัก (บาท)</th><th>ราคาซื้อ/บาท</th><th>มูลค่าที่ซื้อ</th><th>มูลค่าปัจจุบัน</th><th>กำไร/ขาดทุน</th><th>หมายเหตุ</th><th></th></tr></thead>
+          <tbody id="goldBody"></tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-head">🏠 ทรัพย์สินส่วนตัว <button class="btn btn-blue" onclick="openAssetModal()">＋ เพิ่มทรัพย์สิน</button></div>
+        <table>
+          <thead><tr><th>รายการ</th><th>หมวดหมู่</th><th>มูลค่า</th><th>วันที่ได้มา</th><th>ราคาซื้อ</th><th>กำไร/ขาดทุน</th><th>หมายเหตุ</th><th></th></tr></thead>
+          <tbody id="assetBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FIN: SUBSCRIPTION -->
+    <div id="finsub" class="finpage" style="display:none;">
+      <div class="toolbar">
+        <button class="btn btn-blue" onclick="openSubModal()">＋ เพิ่ม</button>
+        <button class="btn btn-red" onclick="clearArr('subs','สมาชิกแอพ')">🗑 ล้างทั้งหมด</button>
+      </div>
+      <div class="cards4" id="subCards"></div>
+      <div class="card">
+        <div class="card-head">🎫 รายการสมาชิก</div>
+        <table>
+          <thead><tr><th>รายการ</th><th>ผู้ใช้</th><th>ราคา/ปี</th><th>ราคา/เดือน</th><th>เริ่มสมัคร</th><th>หมดอายุ</th><th>สถานะ</th><th>หมายเหตุ</th><th></th></tr></thead>
+          <tbody id="subBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- FIN: LOGINS -->
+    <div id="finlogin" class="finpage" style="display:none;">
+      <div class="toolbar">
+        <input type="text" id="loginSearch" placeholder="🔍 ค้นหาหัวข้อ / user / ประเภท" oninput="renderLogins()">
+        <button class="btn btn-outline" onclick="toggleAllPw()">👁 แสดง/ซ่อนรหัสผ่าน</button>
+        <button class="btn btn-blue" onclick="openLoginModal()">＋ เพิ่ม</button>
+        <button class="btn btn-red" onclick="clearArr('logins','บัญชี Login')">🗑 ล้างทั้งหมด</button>
+      </div>
+      <div class="card">
+        <div class="card-head">🔐 รายการบัญชี</div>
+        <table>
+          <thead><tr><th>หัวข้อ</th><th>User</th><th>Password</th><th>ประเภท</th><th>หมายเหตุ</th><th></th></tr></thead>
+          <tbody id="loginBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </main>
 
 <div id="modalRoot"></div>
@@ -292,7 +447,16 @@ let state = {
   todos: [],
   depts: ["วางแผนการผลิต","จัดซื้อ","คลังสินค้า","บัญชี"],
   saturdayDuty: SEED_DUTY.slice(),
-  holidays: SEED_HOLIDAYS.slice()
+  holidays: SEED_HOLIDAYS.slice(),
+  lifeTodos: [],
+  income: [],
+  expense: [],
+  debts: [],
+  stocks: [],
+  golds: [],
+  assets: [],
+  subs: [],
+  logins: []
 };
 
 /* ============ CLOCK / PERIODS ============ */
@@ -324,8 +488,17 @@ setInterval(updateClock,1000); updateClock();
 function switchTab(t){
   document.getElementById('tabTodo').style.display = t==='todo' ? '' : 'none';
   document.getElementById('tabCal').style.display = t==='cal' ? '' : 'none';
+  document.getElementById('tabFin').style.display = t==='fin' ? '' : 'none';
   document.getElementById('tabTodoBtn').classList.toggle('active', t==='todo');
   document.getElementById('tabCalBtn').classList.toggle('active', t==='cal');
+  document.getElementById('tabFinBtn').classList.toggle('active', t==='fin');
+  if(t==='fin') renderFinance();
+}
+
+function switchFinPage(p){
+  document.querySelectorAll('.finpage').forEach(el=>el.style.display = el.id===p ? '' : 'none');
+  document.querySelectorAll('.fin-subtab').forEach(el=>el.classList.toggle('active', el.dataset.p===p));
+  renderFinance();
 }
 
 /* ============ SYNC ============ */
@@ -339,6 +512,15 @@ async function syncFromSheet(){
     state.saturdayDuty = (data.SaturdayDuty||[]).length ? data.SaturdayDuty.map(normalizeDuty) : SEED_DUTY.slice();
     state.holidays = (data.Holidays||[]).length ? data.Holidays.map(normalizeHoliday) : SEED_HOLIDAYS.slice();
     if(data.Depts && data.Depts.length) state.depts = data.Depts.map(d=>d.name).filter(Boolean);
+    state.lifeTodos = (data.LifeTodos||[]).map(normalizeLifeTodo);
+    state.income = (data.Income||[]).map(x=>normalizeMoney(x,'income'));
+    state.expense = (data.Expense||[]).map(x=>normalizeMoney(x,'expense'));
+    state.debts = (data.Debts||[]).map(normalizeDebt);
+    state.stocks = (data.Stocks||[]).map(normalizeStock);
+    state.golds = (data.Golds||[]).map(normalizeGold);
+    state.assets = (data.Assets||[]).map(normalizeAsset);
+    state.subs = (data.Subs||[]).map(normalizeSub);
+    state.logins = (data.Logins||[]).map(normalizeLogin);
     renderAll();
     document.getElementById('syncStatus').textContent = "✓ ซิงค์สำเร็จ " + new Date().toLocaleTimeString('th-TH',{hour12:false});
   }catch(err){
@@ -355,7 +537,16 @@ async function pushToSheet(){
       Todos: state.todos,
       Depts: state.depts.map(name=>({id:uid(),name})),
       SaturdayDuty: state.saturdayDuty,
-      Holidays: state.holidays
+      Holidays: state.holidays,
+      LifeTodos: state.lifeTodos,
+      Income: state.income,
+      Expense: state.expense,
+      Debts: state.debts,
+      Stocks: state.stocks,
+      Golds: state.golds,
+      Assets: state.assets,
+      Subs: state.subs,
+      Logins: state.logins
     };
     await fetch(SCRIPT_URL, {method:'POST', body: JSON.stringify(payload)});
     document.getElementById('syncStatus').textContent = "✓ อัปโหลดสำเร็จ " + new Date().toLocaleTimeString('th-TH',{hour12:false});
@@ -367,6 +558,7 @@ async function pushToSheet(){
 
 function normalizeTodo(t){ return {id:t.id||uid(), task:t.task||'', requester:t.requester||'', dept:t.dept||'', ref:t.ref||'', priority:t.priority||'ทั่วไป', due:t.due||'', remarks:t.remarks||'', done: t.done===true||t.done==='TRUE'||t.done===1, completedAt: t.completedAt||''}; }
 function todayISO(){ return new Date().toISOString().slice(0,10); }
+function toBool(v){ return v===true||v==='TRUE'||v===1||v==='1'; }
 function normalizeDuty(d){
   const today = new Date(); today.setHours(0,0,0,0);
   const dd = new Date(d.date); dd.setHours(0,0,0,0);
@@ -377,6 +569,14 @@ function normalizeDuty(d){
   return {id:d.id||uid(), date:d.date||'', name:d.name||'', confirmed, notify:d.notify||''};
 }
 function normalizeHoliday(h){ return {id:h.id||uid(), order:h.order||'', day:h.day||'', date:h.date||'', name:h.name||'', notify:h.notify||''}; }
+function normalizeLifeTodo(t){ return {id:t.id||uid(), name:t.name||'', due:t.due||'', time:t.time||'', price:parseFloat(t.price)||0, priority:t.priority||'ทั่วไป', location:t.location||'', note:t.note||'', done:toBool(t.done)}; }
+function normalizeMoney(x,kind){ return {id:x.id||uid(), name:x.name||'', category:x.category||'', date:x.date||'', amount:parseFloat(x.amount)||0, checked:toBool(x.checked), note:x.note||''}; }
+function normalizeDebt(d){ return {id:d.id||uid(), name:d.name||'', category:d.category||'', limit:parseFloat(d.limit)||0, used:parseFloat(d.used)||0, monthlyPayment:parseFloat(d.monthlyPayment)||0, dueDay:d.dueDay||'', note:d.note||''}; }
+function normalizeStock(s){ return {id:s.id||uid(), name:s.name||'', invested:parseFloat(s.invested)||0, yieldPct:parseFloat(s.yieldPct)||0, dividendYear:parseFloat(s.dividendYear)||0, note:s.note||''}; }
+function normalizeGold(g){ return {id:g.id||uid(), date:g.date||'', weight:parseFloat(g.weight)||0, buyPrice:parseFloat(g.buyPrice)||0, note:g.note||''}; }
+function normalizeAsset(a){ return {id:a.id||uid(), name:a.name||'', category:a.category||'', value:parseFloat(a.value)||0, dateAcquired:a.dateAcquired||'', buyPrice:parseFloat(a.buyPrice)||0, note:a.note||''}; }
+function normalizeSub(s){ return {id:s.id||uid(), name:s.name||'', member:s.member||'', priceYear:parseFloat(s.priceYear)||0, priceMonth:parseFloat(s.priceMonth)||0, start:s.start||'', expire:s.expire||'', note:s.note||''}; }
+function normalizeLogin(l){ return {id:l.id||uid(), title:l.title||'', user:l.user||'', password:l.password||'', category:l.category||'', note:l.note||''}; }
 
 /* ============ RENDER: TODOS ============ */
 function priorityPill(p){
@@ -782,8 +982,564 @@ function saveHoliday(){
   closeModal(); renderCalendar();
 }
 
+/* ============ FINANCE: SHARED HELPERS ============ */
+function fmtMoney(n){ return '฿' + (Number(n)||0).toLocaleString('th-TH',{maximumFractionDigits:2}); }
+function deleteArrItem(key,id){
+  state[key] = state[key].filter(x=>x.id!==id);
+  renderFinance();
+}
+function clearArr(key,label){
+  if(!confirm(`ล้าง${label}ทั้งหมด?`)) return;
+  state[key] = [];
+  renderFinance();
+}
+function statCard(label,val,cls){
+  return `<div class="stat-card"><div class="lbl">${label}</div><div class="val ${cls||''}">${val}</div></div>`;
+}
+function renderFinance(){
+  renderFinDash();
+  renderLifeTodos();
+  renderBudget();
+  renderDebt();
+  renderInvest();
+  renderSub();
+  renderLogins();
+}
+
+/* ============ FINANCE: DASHBOARD ============ */
+function renderFinDash(){
+  const incTotal = state.income.reduce((s,x)=>s+x.amount,0);
+  const expTotal = state.expense.reduce((s,x)=>s+x.amount,0);
+  const debtRemain = state.debts.reduce((s,x)=>s+(x.limit-x.used),0);
+  const goldPrice = parseFloat(document.getElementById('goldPriceInput')?.value)||0;
+  const investVal = state.stocks.reduce((s,x)=>s+x.invested,0)
+    + state.golds.reduce((s,x)=>s+x.weight*goldPrice,0)
+    + state.assets.reduce((s,x)=>s+x.value,0);
+  const subMonthly = state.subs.reduce((s,x)=>s+x.priceMonth,0);
+  const pendingTodos = state.lifeTodos.filter(t=>!t.done).length;
+  document.getElementById('finDashCards').innerHTML = [
+    statCard('รายรับสะสม', fmtMoney(incTotal), 'val-g'),
+    statCard('รายจ่ายสะสม', fmtMoney(expTotal), 'val-r'),
+    statCard('คงเหลือสะสม', fmtMoney(incTotal-expTotal), (incTotal-expTotal)>=0?'val-g':'val-r'),
+    statCard('หนี้คงเหลือ', fmtMoney(debtRemain), 'val-r'),
+    statCard('มูลค่าการลงทุน', fmtMoney(investVal), 'val-gold'),
+    statCard('ค่าสมาชิก/เดือน', fmtMoney(subMonthly), 'val-b'),
+    statCard('งานที่ต้องทำค้าง', pendingTodos+' รายการ', '')
+  ].join('');
+}
+
+/* ============ FINANCE: PERSONAL TODO ============ */
+function renderLifeTodos(){
+  const body = document.getElementById('lifeTodoBody');
+  if(!body) return;
+  const rows = state.lifeTodos;
+  body.innerHTML = rows.length ? rows.map(t=>`
+    <tr>
+      <td><input type="checkbox" ${t.done?'checked':''} onchange="toggleLifeTodo('${t.id}')"></td>
+      <td>${esc(t.name)}</td>
+      <td>${fmtDue(t.due)}${t.time?' '+esc(t.time):''}</td>
+      <td>${fmtMoney(t.price)}</td>
+      <td>${priorityPill(t.priority)}</td>
+      <td>${esc(t.location)}</td>
+      <td>${esc(t.note)}</td>
+      <td><div class="row-actions">
+        <button class="icon-btn" onclick="openLifeTodoModal('${t.id}')">✏️</button>
+        <button class="icon-btn" onclick="deleteArrItem('lifeTodos','${t.id}')">🗑️</button>
+      </div></td>
+    </tr>`).join('') : `<tr class="empty-row"><td colspan="8">ไม่มีข้อมูล</td></tr>`;
+}
+function toggleLifeTodo(id){ const t=state.lifeTodos.find(x=>x.id===id); if(t){t.done=!t.done; renderFinance();} }
+function openLifeTodoModal(id){
+  const e = id ? state.lifeTodos.find(x=>x.id===id) : null;
+  document.getElementById('modalRoot').innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>${e?'แก้ไขรายการ':'เพิ่มรายการที่ต้องทำ'}</h3>
+      <div class="field"><label>ชื่อรายการ</label><input id="lt_name" value="${e?esc(e.name):''}"></div>
+      <div class="field"><label>วันครบกำหนด</label><input type="date" id="lt_due" value="${e&&e.due?e.due.slice(0,10):''}"></div>
+      <div class="field"><label>เวลานัดหมาย</label><input type="time" id="lt_time" value="${e?esc(e.time):''}"></div>
+      <div class="field"><label>ราคา</label><input type="number" id="lt_price" value="${e?e.price:''}"></div>
+      <div class="field"><label>ความสำคัญ</label>
+        <select id="lt_priority">
+          <option ${e&&e.priority==='ด่วนมาก'?'selected':''}>ด่วนมาก</option>
+          <option ${e&&e.priority==='ปานกลาง'?'selected':''}>ปานกลาง</option>
+          <option ${(!e)||e.priority==='ทั่วไป'?'selected':''}>ทั่วไป</option>
+        </select>
+      </div>
+      <div class="field"><label>สถานที่</label><input id="lt_location" value="${e?esc(e.location):''}"></div>
+      <div class="field"><label>หมายเหตุ</label><textarea id="lt_note" rows="2">${e?esc(e.note):''}</textarea></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal()">ยกเลิก</button>
+        <button class="btn btn-blue" onclick="saveLifeTodo('${e?e.id:''}')">บันทึก</button>
+      </div>
+    </div>
+  </div>`;
+}
+function saveLifeTodo(id){
+  const name = document.getElementById('lt_name').value.trim();
+  if(!name){ alert('กรุณากรอกชื่อรายการ'); return; }
+  const val = {
+    name,
+    due: document.getElementById('lt_due').value,
+    time: document.getElementById('lt_time').value,
+    price: parseFloat(document.getElementById('lt_price').value)||0,
+    priority: document.getElementById('lt_priority').value,
+    location: document.getElementById('lt_location').value.trim(),
+    note: document.getElementById('lt_note').value.trim()
+  };
+  if(id){ Object.assign(state.lifeTodos.find(x=>x.id===id), val); }
+  else{ state.lifeTodos.push(Object.assign({id:uid(), done:false}, val)); }
+  closeModal(); renderFinance();
+}
+
+/* ============ FINANCE: BUDGET (INCOME/EXPENSE) ============ */
+function fillBudYearFilter(){
+  const sel = document.getElementById('budYearFilter');
+  if(!sel || sel.options.length) return;
+  const curBE = new Date().getFullYear()+543;
+  const years = [];
+  for(let y=curBE-2; y<=curBE+1; y++) years.push(y);
+  sel.innerHTML = '<option value="">ทุกปี</option>' + years.map(y=>`<option value="${y}" ${y===curBE?'selected':''}>${y}</option>`).join('');
+}
+function renderBudget(){
+  fillBudYearFilter();
+  const monthEl = document.getElementById('budMonthFilter');
+  const yearEl = document.getElementById('budYearFilter');
+  if(!monthEl || !yearEl) return;
+  const month = monthEl.value;
+  const yearBE = yearEl.value;
+  const yearAD = yearBE ? (parseInt(yearBE)-543) : null;
+  const inRange = (dstr)=>{
+    if(!dstr) return !yearAD && !month;
+    const d = new Date(dstr);
+    if(isNaN(d)) return false;
+    if(yearAD && d.getFullYear()!==yearAD) return false;
+    if(month && (d.getMonth()+1)!==parseInt(month)) return false;
+    return true;
+  };
+  const incRows = state.income.filter(x=>inRange(x.date));
+  const expRows = state.expense.filter(x=>inRange(x.date));
+  const incTotal = incRows.reduce((s,x)=>s+x.amount,0);
+  const expTotal = expRows.reduce((s,x)=>s+x.amount,0);
+  const paidTotal = expRows.filter(x=>x.checked).reduce((s,x)=>s+x.amount,0);
+  document.getElementById('budgetCards').innerHTML = [
+    statCard('รายรับ', fmtMoney(incTotal), 'val-g'),
+    statCard('รายจ่ายทั้งหมด', fmtMoney(expTotal), 'val-r'),
+    statCard('จ่ายแล้ว', fmtMoney(paidTotal), 'val-b'),
+    statCard('คงเหลือ', fmtMoney(incTotal-expTotal), (incTotal-expTotal)>=0?'val-g':'val-r')
+  ].join('');
+
+  document.getElementById('incomeBody').innerHTML = incRows.length ? incRows.map(x=>`
+    <tr>
+      <td><input type="checkbox" ${x.checked?'checked':''} onchange="toggleMoneyChecked('income','${x.id}')"></td>
+      <td>${esc(x.name)}</td><td>${esc(x.category)}</td><td>${fmtDue(x.date)}</td>
+      <td>${fmtMoney(x.amount)}</td><td>${x.checked?'✓':''}</td><td>${esc(x.note)}</td>
+      <td><div class="row-actions">
+        <button class="icon-btn" onclick="openIncomeModal('${x.id}')">✏️</button>
+        <button class="icon-btn" onclick="deleteArrItem('income','${x.id}')">🗑️</button>
+      </div></td>
+    </tr>`).join('') : `<tr class="empty-row"><td colspan="8">ไม่มีข้อมูล</td></tr>`;
+
+  document.getElementById('expenseBody').innerHTML = expRows.length ? expRows.map(x=>`
+    <tr>
+      <td><input type="checkbox" ${x.checked?'checked':''} onchange="toggleMoneyChecked('expense','${x.id}')"></td>
+      <td>${esc(x.name)}</td><td>${esc(x.category)}</td><td>${fmtDue(x.date)}</td>
+      <td>${fmtMoney(x.amount)}</td><td>${x.checked?'✓':''}</td><td>${esc(x.note)}</td>
+      <td><div class="row-actions">
+        <button class="icon-btn" onclick="openExpenseModal('${x.id}')">✏️</button>
+        <button class="icon-btn" onclick="deleteArrItem('expense','${x.id}')">🗑️</button>
+      </div></td>
+    </tr>`).join('') : `<tr class="empty-row"><td colspan="8">ไม่มีข้อมูล</td></tr>`;
+}
+function toggleMoneyChecked(kind,id){
+  const t = state[kind].find(x=>x.id===id);
+  if(t){ t.checked = !t.checked; renderFinance(); }
+}
+function moneyModal(kind,id){
+  const arr = state[kind];
+  const e = id ? arr.find(x=>x.id===id) : null;
+  const isInc = kind==='income';
+  document.getElementById('modalRoot').innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>${e?'แก้ไข':'เพิ่ม'}${isInc?'รายรับ':'รายจ่าย'}</h3>
+      <div class="field"><label>รายการ</label><input id="mm_name" value="${e?esc(e.name):''}"></div>
+      <div class="field"><label>หมวด</label><input id="mm_category" value="${e?esc(e.category):''}"></div>
+      <div class="field"><label>${isInc?'วันที่':'ครบกำหนด'}</label><input type="date" id="mm_date" value="${e&&e.date?e.date.slice(0,10):''}"></div>
+      <div class="field"><label>จำนวน</label><input type="number" id="mm_amount" value="${e?e.amount:''}"></div>
+      <div class="field"><label><input type="checkbox" id="mm_checked" ${e&&e.checked?'checked':''} style="width:auto;display:inline-block;"> ${isInc?'รับแล้ว':'จ่ายแล้ว'}</label></div>
+      <div class="field"><label>หมายเหตุ</label><textarea id="mm_note" rows="2">${e?esc(e.note):''}</textarea></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal()">ยกเลิก</button>
+        <button class="btn btn-blue" onclick="saveMoney('${kind}','${e?e.id:''}')">บันทึก</button>
+      </div>
+    </div>
+  </div>`;
+}
+function openIncomeModal(id){ moneyModal('income', id); }
+function openExpenseModal(id){ moneyModal('expense', id); }
+function saveMoney(kind,id){
+  const name = document.getElementById('mm_name').value.trim();
+  if(!name){ alert('กรุณากรอกรายการ'); return; }
+  const val = {
+    name,
+    category: document.getElementById('mm_category').value.trim(),
+    date: document.getElementById('mm_date').value,
+    amount: parseFloat(document.getElementById('mm_amount').value)||0,
+    checked: document.getElementById('mm_checked').checked,
+    note: document.getElementById('mm_note').value.trim()
+  };
+  if(id){ Object.assign(state[kind].find(x=>x.id===id), val); }
+  else{ state[kind].push(Object.assign({id:uid()}, val)); }
+  closeModal(); renderFinance();
+}
+
+/* ============ FINANCE: DEBT ============ */
+function renderDebt(){
+  const body = document.getElementById('debtBody');
+  if(!body) return;
+  const rows = state.debts;
+  const totalLimit = rows.reduce((s,x)=>s+x.limit,0);
+  const totalUsed = rows.reduce((s,x)=>s+x.used,0);
+  const totalMonthly = rows.reduce((s,x)=>s+x.monthlyPayment,0);
+  document.getElementById('debtCards').innerHTML = [
+    statCard('วงเงินรวม', fmtMoney(totalLimit), 'val-b'),
+    statCard('วงเงินคงเหลือรวม', fmtMoney(totalLimit-totalUsed), 'val-g'),
+    statCard('ผ่อนรวม/เดือน', fmtMoney(totalMonthly), 'val-r')
+  ].join('');
+  body.innerHTML = rows.length ? rows.map(d=>`
+    <tr>
+      <td>${esc(d.name)}</td><td>${esc(d.category)}</td>
+      <td>${fmtMoney(d.limit)}</td><td>${fmtMoney(d.used)}</td><td>${fmtMoney(d.limit-d.used)}</td>
+      <td>${fmtMoney(d.monthlyPayment)}</td><td>${esc(d.dueDay)}</td><td>${esc(d.note)}</td>
+      <td><div class="row-actions">
+        <button class="icon-btn" onclick="openDebtModal('${d.id}')">✏️</button>
+        <button class="icon-btn" onclick="deleteArrItem('debts','${d.id}')">🗑️</button>
+      </div></td>
+    </tr>`).join('') : `<tr class="empty-row"><td colspan="9">ไม่มีข้อมูล</td></tr>`;
+}
+function openDebtModal(id){
+  const e = id ? state.debts.find(x=>x.id===id) : null;
+  document.getElementById('modalRoot').innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>${e?'แก้ไข':'เพิ่ม'}บัตร/สินเชื่อ</h3>
+      <div class="field"><label>ชื่อ</label><input id="db_name" value="${e?esc(e.name):''}"></div>
+      <div class="field"><label>ประเภท</label><input id="db_category" value="${e?esc(e.category):''}" placeholder="เช่น บัตรเครดิต, สินเชื่อส่วนบุคคล"></div>
+      <div class="field"><label>วงเงิน</label><input type="number" id="db_limit" value="${e?e.limit:''}"></div>
+      <div class="field"><label>เบิกใช้ไปแล้ว</label><input type="number" id="db_used" value="${e?e.used:''}"></div>
+      <div class="field"><label>ผ่อน/เดือน</label><input type="number" id="db_monthly" value="${e?e.monthlyPayment:''}"></div>
+      <div class="field"><label>ครบกำหนด (วันที่ของเดือน)</label><input id="db_dueday" value="${e?esc(e.dueDay):''}" placeholder="เช่น 5"></div>
+      <div class="field"><label>หมายเหตุ</label><textarea id="db_note" rows="2">${e?esc(e.note):''}</textarea></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal()">ยกเลิก</button>
+        <button class="btn btn-blue" onclick="saveDebt('${e?e.id:''}')">บันทึก</button>
+      </div>
+    </div>
+  </div>`;
+}
+function saveDebt(id){
+  const name = document.getElementById('db_name').value.trim();
+  if(!name){ alert('กรุณากรอกชื่อ'); return; }
+  const val = {
+    name,
+    category: document.getElementById('db_category').value.trim(),
+    limit: parseFloat(document.getElementById('db_limit').value)||0,
+    used: parseFloat(document.getElementById('db_used').value)||0,
+    monthlyPayment: parseFloat(document.getElementById('db_monthly').value)||0,
+    dueDay: document.getElementById('db_dueday').value.trim(),
+    note: document.getElementById('db_note').value.trim()
+  };
+  if(id){ Object.assign(state.debts.find(x=>x.id===id), val); }
+  else{ state.debts.push(Object.assign({id:uid()}, val)); }
+  closeModal(); renderFinance();
+}
+
+/* ============ FINANCE: INVEST (STOCKS / GOLD / ASSETS) ============ */
+function renderInvest(){
+  const stockBody = document.getElementById('stockBody');
+  if(!stockBody) return;
+
+  const stInvested = state.stocks.reduce((s,x)=>s+x.invested,0);
+  const stDividend = state.stocks.reduce((s,x)=>s+x.dividendYear,0);
+  stockBody.innerHTML = state.stocks.length ? state.stocks.map(s=>`
+    <tr>
+      <td>${esc(s.name)}</td><td>${fmtMoney(s.invested)}</td><td>${s.yieldPct}%</td>
+      <td>${fmtMoney(s.dividendYear)}</td><td>${esc(s.note)}</td>
+      <td><div class="row-actions">
+        <button class="icon-btn" onclick="openStockModal('${s.id}')">✏️</button>
+        <button class="icon-btn" onclick="deleteArrItem('stocks','${s.id}')">🗑️</button>
+      </div></td>
+    </tr>`).join('') : `<tr class="empty-row"><td colspan="6">ไม่มีข้อมูล</td></tr>`;
+
+  const goldPrice = parseFloat(document.getElementById('goldPriceInput').value)||0;
+  let goldBuyValueTotal = 0, goldCurValueTotal = 0;
+  document.getElementById('goldBody').innerHTML = state.golds.length ? state.golds.map(g=>{
+    const buyVal = g.weight*g.buyPrice;
+    const curVal = g.weight*goldPrice;
+    goldBuyValueTotal += buyVal; goldCurValueTotal += curVal;
+    const pnl = curVal - buyVal;
+    return `<tr>
+      <td>${fmtDue(g.date)}</td><td>${g.weight}</td><td>${fmtMoney(g.buyPrice)}</td>
+      <td>${fmtMoney(buyVal)}</td><td>${fmtMoney(curVal)}</td>
+      <td class="${pnl>=0?'val-g':'val-r'}">${fmtMoney(pnl)}</td><td>${esc(g.note)}</td>
+      <td><div class="row-actions">
+        <button class="icon-btn" onclick="openGoldModal('${g.id}')">✏️</button>
+        <button class="icon-btn" onclick="deleteArrItem('golds','${g.id}')">🗑️</button>
+      </div></td>
+    </tr>`;
+  }).join('') : `<tr class="empty-row"><td colspan="8">ไม่มีข้อมูล</td></tr>`;
+
+  const astTotal = state.assets.reduce((s,x)=>s+x.value,0);
+  document.getElementById('assetBody').innerHTML = state.assets.length ? state.assets.map(a=>{
+    const pnl = a.value - a.buyPrice;
+    return `<tr>
+      <td>${esc(a.name)}</td><td>${esc(a.category)}</td><td>${fmtMoney(a.value)}</td>
+      <td>${fmtDue(a.dateAcquired)}</td><td>${fmtMoney(a.buyPrice)}</td>
+      <td class="${pnl>=0?'val-g':'val-r'}">${fmtMoney(pnl)}</td><td>${esc(a.note)}</td>
+      <td><div class="row-actions">
+        <button class="icon-btn" onclick="openAssetModal('${a.id}')">✏️</button>
+        <button class="icon-btn" onclick="deleteArrItem('assets','${a.id}')">🗑️</button>
+      </div></td>
+    </tr>`;
+  }).join('') : `<tr class="empty-row"><td colspan="8">ไม่มีข้อมูล</td></tr>`;
+
+  document.getElementById('investSummary').innerHTML = [
+    statCard('มูลค่าทรัพย์สินรวม', fmtMoney(stInvested+goldCurValueTotal+astTotal), 'val-gold'),
+    statCard('เงินลงทุน (หุ้น+ทอง)', fmtMoney(stInvested+goldBuyValueTotal), 'val-b'),
+    statCard('ปันผลคาดหวัง/ปี', fmtMoney(stDividend), 'val-g'),
+    statCard('มูลค่าทรัพย์สินส่วนตัว', fmtMoney(astTotal), '')
+  ].join('');
+}
+function openStockModal(id){
+  const e = id ? state.stocks.find(x=>x.id===id) : null;
+  document.getElementById('modalRoot').innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>${e?'แก้ไข':'เพิ่ม'}หุ้น/กองทุน</h3>
+      <div class="field"><label>ชื่อหุ้น/กองทุน</label><input id="sk_name" value="${e?esc(e.name):''}"></div>
+      <div class="field"><label>เงินลงทุน</label><input type="number" id="sk_invested" value="${e?e.invested:''}"></div>
+      <div class="field"><label>Yield (%)</label><input type="number" id="sk_yield" value="${e?e.yieldPct:''}"></div>
+      <div class="field"><label>ปันผล/ปี</label><input type="number" id="sk_dividend" value="${e?e.dividendYear:''}"></div>
+      <div class="field"><label>หมายเหตุ</label><textarea id="sk_note" rows="2">${e?esc(e.note):''}</textarea></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal()">ยกเลิก</button>
+        <button class="btn btn-blue" onclick="saveStock('${e?e.id:''}')">บันทึก</button>
+      </div>
+    </div>
+  </div>`;
+}
+function saveStock(id){
+  const name = document.getElementById('sk_name').value.trim();
+  if(!name){ alert('กรุณากรอกชื่อ'); return; }
+  const val = {
+    name,
+    invested: parseFloat(document.getElementById('sk_invested').value)||0,
+    yieldPct: parseFloat(document.getElementById('sk_yield').value)||0,
+    dividendYear: parseFloat(document.getElementById('sk_dividend').value)||0,
+    note: document.getElementById('sk_note').value.trim()
+  };
+  if(id){ Object.assign(state.stocks.find(x=>x.id===id), val); }
+  else{ state.stocks.push(Object.assign({id:uid()}, val)); }
+  closeModal(); renderFinance();
+}
+function openGoldModal(id){
+  const e = id ? state.golds.find(x=>x.id===id) : null;
+  document.getElementById('modalRoot').innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>${e?'แก้ไข':'เพิ่ม'}ออมทอง</h3>
+      <div class="field"><label>วันที่ซื้อ</label><input type="date" id="gd_date" value="${e&&e.date?e.date.slice(0,10):''}"></div>
+      <div class="field"><label>น้ำหนัก (บาททอง)</label><input type="number" id="gd_weight" value="${e?e.weight:''}"></div>
+      <div class="field"><label>ราคาซื้อ/บาท</label><input type="number" id="gd_buyprice" value="${e?e.buyPrice:''}"></div>
+      <div class="field"><label>หมายเหตุ</label><textarea id="gd_note" rows="2">${e?esc(e.note):''}</textarea></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal()">ยกเลิก</button>
+        <button class="btn btn-blue" onclick="saveGold('${e?e.id:''}')">บันทึก</button>
+      </div>
+    </div>
+  </div>`;
+}
+function saveGold(id){
+  const val = {
+    date: document.getElementById('gd_date').value,
+    weight: parseFloat(document.getElementById('gd_weight').value)||0,
+    buyPrice: parseFloat(document.getElementById('gd_buyprice').value)||0,
+    note: document.getElementById('gd_note').value.trim()
+  };
+  if(!val.date || !val.weight){ alert('กรุณากรอกวันที่และน้ำหนัก'); return; }
+  if(id){ Object.assign(state.golds.find(x=>x.id===id), val); }
+  else{ state.golds.push(Object.assign({id:uid()}, val)); }
+  closeModal(); renderFinance();
+}
+function openAssetModal(id){
+  const e = id ? state.assets.find(x=>x.id===id) : null;
+  document.getElementById('modalRoot').innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>${e?'แก้ไข':'เพิ่ม'}ทรัพย์สินส่วนตัว</h3>
+      <div class="field"><label>รายการ</label><input id="as_name" value="${e?esc(e.name):''}"></div>
+      <div class="field"><label>หมวดหมู่</label><input id="as_category" value="${e?esc(e.category):''}"></div>
+      <div class="field"><label>มูลค่าปัจจุบัน</label><input type="number" id="as_value" value="${e?e.value:''}"></div>
+      <div class="field"><label>วันที่ได้มา</label><input type="date" id="as_date" value="${e&&e.dateAcquired?e.dateAcquired.slice(0,10):''}"></div>
+      <div class="field"><label>ราคาซื้อ</label><input type="number" id="as_buyprice" value="${e?e.buyPrice:''}"></div>
+      <div class="field"><label>หมายเหตุ</label><textarea id="as_note" rows="2">${e?esc(e.note):''}</textarea></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal()">ยกเลิก</button>
+        <button class="btn btn-blue" onclick="saveAsset('${e?e.id:''}')">บันทึก</button>
+      </div>
+    </div>
+  </div>`;
+}
+function saveAsset(id){
+  const name = document.getElementById('as_name').value.trim();
+  if(!name){ alert('กรุณากรอกรายการ'); return; }
+  const val = {
+    name,
+    category: document.getElementById('as_category').value.trim(),
+    value: parseFloat(document.getElementById('as_value').value)||0,
+    dateAcquired: document.getElementById('as_date').value,
+    buyPrice: parseFloat(document.getElementById('as_buyprice').value)||0,
+    note: document.getElementById('as_note').value.trim()
+  };
+  if(id){ Object.assign(state.assets.find(x=>x.id===id), val); }
+  else{ state.assets.push(Object.assign({id:uid()}, val)); }
+  closeModal(); renderFinance();
+}
+
+/* ============ FINANCE: SUBSCRIPTIONS ============ */
+function subStatus(expire){
+  if(!expire) return {label:'—', cls:''};
+  const today = new Date(); today.setHours(0,0,0,0);
+  const d = new Date(expire); d.setHours(0,0,0,0);
+  if(isNaN(d)) return {label:'—', cls:''};
+  const diff = Math.round((d-today)/86400000);
+  if(diff < 0) return {label:'หมดอายุแล้ว', cls:'pill-high'};
+  if(diff <= 15) return {label:`ใกล้หมดอายุ (${diff} วัน)`, cls:'pill-mid'};
+  return {label:'ใช้งานอยู่', cls:'pill-low'};
+}
+function renderSub(){
+  const body = document.getElementById('subBody');
+  if(!body) return;
+  const rows = state.subs;
+  const yearTotal = rows.reduce((s,x)=>s+x.priceYear,0);
+  const monthTotal = rows.reduce((s,x)=>s+x.priceMonth,0);
+  const activeCount = rows.filter(x=>subStatus(x.expire).cls!=='pill-high').length;
+  const expiringCount = rows.filter(x=>subStatus(x.expire).cls==='pill-mid').length;
+  document.getElementById('subCards').innerHTML = [
+    statCard('ค่าบริการ/ปี', fmtMoney(yearTotal), 'val-b'),
+    statCard('ค่าบริการ/เดือน', fmtMoney(monthTotal), 'val-b'),
+    statCard('กำลังใช้งาน', activeCount+' รายการ', 'val-g'),
+    statCard('ใกล้หมดอายุ (15 วัน)', expiringCount+' รายการ', 'val-r')
+  ].join('');
+  body.innerHTML = rows.length ? rows.map(s=>{
+    const st = subStatus(s.expire);
+    return `<tr>
+      <td>${esc(s.name)}</td><td>${esc(s.member)}</td>
+      <td>${fmtMoney(s.priceYear)}</td><td>${fmtMoney(s.priceMonth)}</td>
+      <td>${fmtDue(s.start)}</td><td>${fmtDue(s.expire)}</td>
+      <td><span class="pill ${st.cls}">${st.label}</span></td><td>${esc(s.note)}</td>
+      <td><div class="row-actions">
+        <button class="icon-btn" onclick="openSubModal('${s.id}')">✏️</button>
+        <button class="icon-btn" onclick="deleteArrItem('subs','${s.id}')">🗑️</button>
+      </div></td>
+    </tr>`;
+  }).join('') : `<tr class="empty-row"><td colspan="9">ไม่มีข้อมูล</td></tr>`;
+}
+function openSubModal(id){
+  const e = id ? state.subs.find(x=>x.id===id) : null;
+  document.getElementById('modalRoot').innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>${e?'แก้ไข':'เพิ่ม'}สมาชิกแอพ</h3>
+      <div class="field"><label>รายการ</label><input id="sb_name" value="${e?esc(e.name):''}"></div>
+      <div class="field"><label>ผู้ใช้/สมาชิก</label><input id="sb_member" value="${e?esc(e.member):''}"></div>
+      <div class="field"><label>ราคา/ปี</label><input type="number" id="sb_year" value="${e?e.priceYear:''}"></div>
+      <div class="field"><label>ราคา/เดือน</label><input type="number" id="sb_month" value="${e?e.priceMonth:''}"></div>
+      <div class="field"><label>เริ่มสมัคร</label><input type="date" id="sb_start" value="${e&&e.start?e.start.slice(0,10):''}"></div>
+      <div class="field"><label>หมดอายุ</label><input type="date" id="sb_expire" value="${e&&e.expire?e.expire.slice(0,10):''}"></div>
+      <div class="field"><label>หมายเหตุ</label><textarea id="sb_note" rows="2">${e?esc(e.note):''}</textarea></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal()">ยกเลิก</button>
+        <button class="btn btn-blue" onclick="saveSub('${e?e.id:''}')">บันทึก</button>
+      </div>
+    </div>
+  </div>`;
+}
+function saveSub(id){
+  const name = document.getElementById('sb_name').value.trim();
+  if(!name){ alert('กรุณากรอกรายการ'); return; }
+  const val = {
+    name,
+    member: document.getElementById('sb_member').value.trim(),
+    priceYear: parseFloat(document.getElementById('sb_year').value)||0,
+    priceMonth: parseFloat(document.getElementById('sb_month').value)||0,
+    start: document.getElementById('sb_start').value,
+    expire: document.getElementById('sb_expire').value,
+    note: document.getElementById('sb_note').value.trim()
+  };
+  if(id){ Object.assign(state.subs.find(x=>x.id===id), val); }
+  else{ state.subs.push(Object.assign({id:uid()}, val)); }
+  closeModal(); renderFinance();
+}
+
+/* ============ FINANCE: LOGINS ============ */
+let pwVisible = false;
+function toggleAllPw(){ pwVisible = !pwVisible; renderLogins(); }
+function renderLogins(){
+  const body = document.getElementById('loginBody');
+  if(!body) return;
+  const q = (document.getElementById('loginSearch')?.value||'').trim().toLowerCase();
+  const rows = state.logins.filter(l=>{
+    if(!q) return true;
+    return l.title.toLowerCase().includes(q) || l.user.toLowerCase().includes(q) || l.category.toLowerCase().includes(q);
+  });
+  body.innerHTML = rows.length ? rows.map(l=>`
+    <tr>
+      <td>${esc(l.title)}</td><td>${esc(l.user)}</td>
+      <td>${pwVisible ? esc(l.password) : '•'.repeat(Math.min(l.password.length||6,10))}</td>
+      <td>${esc(l.category)}</td><td>${esc(l.note)}</td>
+      <td><div class="row-actions">
+        <button class="icon-btn" onclick="openLoginModal('${l.id}')">✏️</button>
+        <button class="icon-btn" onclick="deleteArrItem('logins','${l.id}')">🗑️</button>
+      </div></td>
+    </tr>`).join('') : `<tr class="empty-row"><td colspan="6">ไม่มีข้อมูล</td></tr>`;
+}
+function openLoginModal(id){
+  const e = id ? state.logins.find(x=>x.id===id) : null;
+  document.getElementById('modalRoot').innerHTML = `
+  <div class="modal-overlay" onclick="if(event.target===this) closeModal()">
+    <div class="modal">
+      <h3>${e?'แก้ไข':'เพิ่ม'}บัญชี Login</h3>
+      <div class="field"><label>หัวข้อ</label><input id="lg_title" value="${e?esc(e.title):''}"></div>
+      <div class="field"><label>User</label><input id="lg_user" value="${e?esc(e.user):''}"></div>
+      <div class="field"><label>Password</label><input id="lg_password" value="${e?esc(e.password):''}"></div>
+      <div class="field"><label>ประเภท</label><input id="lg_category" value="${e?esc(e.category):''}"></div>
+      <div class="field"><label>หมายเหตุ</label><textarea id="lg_note" rows="2">${e?esc(e.note):''}</textarea></div>
+      <div class="modal-actions">
+        <button class="btn btn-outline" onclick="closeModal()">ยกเลิก</button>
+        <button class="btn btn-blue" onclick="saveLogin('${e?e.id:''}')">บันทึก</button>
+      </div>
+    </div>
+  </div>`;
+}
+function saveLogin(id){
+  const title = document.getElementById('lg_title').value.trim();
+  if(!title){ alert('กรุณากรอกหัวข้อ'); return; }
+  const val = {
+    title,
+    user: document.getElementById('lg_user').value.trim(),
+    password: document.getElementById('lg_password').value,
+    category: document.getElementById('lg_category').value.trim(),
+    note: document.getElementById('lg_note').value.trim()
+  };
+  if(id){ Object.assign(state.logins.find(x=>x.id===id), val); }
+  else{ state.logins.push(Object.assign({id:uid()}, val)); }
+  closeModal(); renderFinance();
+}
+
 /* ============ INIT ============ */
-function renderAll(){ renderTodos(); renderCalendar(); }
+function renderAll(){ renderTodos(); renderCalendar(); renderFinance(); }
 fillYearFilter();
 renderAll();
 if(!SCRIPT_URL.includes("PASTE_YOUR")) syncFromSheet();
