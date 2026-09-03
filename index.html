@@ -331,6 +331,7 @@ const auth = firebase.auth();
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 googleProvider.setCustomParameters({prompt:'select_account'});
 let currentUser = null;
+const ALLOWED_UID = 'fTg0diOrUDT0tnTmQGdi0aqzlut2';
 
 /* ============ AUTH ============ */
 function setAuthError(msg=''){
@@ -1026,10 +1027,23 @@ renderAll();
 document.body.classList.add('auth-locked');
 
 auth.onAuthStateChanged(async user => {
-  currentUser = user || null;
   const gate = document.getElementById('authGate');
   const chip = document.getElementById('userChip');
+
+  if(user && user.uid !== ALLOWED_UID){
+    currentUser = null;
+    if(gate) gate.style.display = 'flex';
+    document.body.classList.add('auth-locked');
+    if(chip){ chip.style.display='none'; chip.innerHTML=''; }
+    setSyncStatus('ไม่มีสิทธิ์ใช้งาน');
+    setAuthError('บัญชี Google นี้ไม่มีสิทธิ์เข้าใช้งาน FAIRTEX-WORK');
+    try{ await auth.signOut(); }catch(err){ console.error(err); }
+    return;
+  }
+
+  currentUser = user || null;
   if(user){
+    setAuthError('');
     if(gate) gate.style.display = 'none';
     document.body.classList.remove('auth-locked');
     renderSignedInUser(user);
