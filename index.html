@@ -112,6 +112,120 @@
     table{font-size:12px;}
   }
 
+
+/* ===== FULL SYSTEM THEME : THOR x HULK ===== */
+:root{
+  --bg:#050b12;
+  --panel:#0b1620;
+  --panel2:#071019;
+  --border:#24577a;
+  --red1:#173f68;
+  --red2:#0a2139;
+  --blue1:#071b34;
+  --blue2:#168cff;
+  --text:#f3f8ff;
+  --sub:#9eb4c8;
+  --danger:#ff5a64;
+  --warn:#ffd24a;
+  --ok:#52d35f;
+  --accent:#37a4ff;
+  --gold:#f1c84c;
+}
+body{
+  background-color:#040a10;
+  background-image:
+    radial-gradient(circle at 12% 5%,rgba(30,135,255,.22),transparent 26%),
+    radial-gradient(circle at 88% 10%,rgba(55,220,74,.16),transparent 28%),
+    linear-gradient(115deg,rgba(15,82,150,.09) 0 48%,rgba(44,180,60,.07) 52% 100%),
+    repeating-linear-gradient(120deg,transparent 0 62px,rgba(93,171,255,.045) 63px 65px,transparent 66px 126px);
+}
+header{
+  background:
+    radial-gradient(circle at 20% 0%,rgba(41,148,255,.35),transparent 35%),
+    radial-gradient(circle at 85% 100%,rgba(71,221,76,.24),transparent 38%),
+    linear-gradient(100deg,#050b13 0%,#0b315a 46%,#14331d 54%,#07130b 100%);
+  border-bottom:3px solid var(--gold);
+  box-shadow:0 3px 26px rgba(32,136,255,.28),0 3px 30px rgba(63,211,72,.12);
+}
+.brand{
+  text-shadow:0 0 12px rgba(60,159,255,.75),1px 1px 0 #000;
+}
+.brand .logo{
+  border-color:var(--gold);
+  box-shadow:0 0 12px rgba(51,151,255,.45),0 0 18px rgba(70,220,80,.20);
+}
+.clock-box{
+  border:1px solid rgba(241,200,76,.35);
+  box-shadow:inset 0 0 18px rgba(30,140,255,.08);
+}
+.period.active{
+  background:linear-gradient(135deg,#147fe8,#0d3f79 55%,#276f34);
+  border-color:var(--gold);
+  box-shadow:0 0 14px rgba(44,147,255,.25);
+}
+.btn-blue{
+  background:linear-gradient(135deg,#1594ff,#0c4d91);
+  border:1px solid rgba(126,194,255,.35);
+}
+.btn-red{
+  background:linear-gradient(135deg,#42c957,#1c6d2b);
+  border:1px solid rgba(129,255,145,.28);
+}
+.btn-green{
+  background:linear-gradient(135deg,#55df63,#1d772d);
+}
+.btn-purple{
+  background:linear-gradient(135deg,#0b315e,#173a27);
+  border:1px solid var(--gold);
+}
+.btn:hover{filter:brightness(1.12);box-shadow:0 0 12px rgba(55,155,255,.22);}
+.tab{
+  background:linear-gradient(180deg,#0c1824,#071019);
+  border-color:#285779;
+}
+.tab.active{
+  background:linear-gradient(100deg,#126ec4 0%,#154d70 48%,#267637 100%);
+  border-color:var(--gold);
+  box-shadow:0 -2px 14px rgba(36,145,255,.30),0 -2px 14px rgba(68,214,78,.15);
+}
+.toolbar,.card,.modal{
+  background:
+    linear-gradient(135deg,rgba(22,73,112,.10),transparent 42%),
+    linear-gradient(315deg,rgba(54,170,66,.07),transparent 40%),
+    var(--panel);
+  border-color:#285a78;
+}
+.card{
+  box-shadow:0 5px 20px rgba(0,0,0,.38),0 0 0 1px rgba(61,146,211,.04);
+}
+.card-head{
+  background:linear-gradient(100deg,#0e5a9e 0%,#113c61 48%,#246b31 100%);
+  border-bottom:2px solid var(--gold);
+  text-shadow:0 1px 2px #000;
+}
+th{
+  background:linear-gradient(90deg,#0b2946,#123956 55%,#183f24);
+  color:#ffe58a;
+}
+td{border-bottom-color:#163247;}
+tr:hover td{
+  background:linear-gradient(90deg,rgba(31,123,204,.13),rgba(51,174,65,.09));
+}
+.month-group-head{
+  background:linear-gradient(90deg,#0e365b,#194c2a);
+  color:#ffe58a;
+}
+.pill-high{background:linear-gradient(135deg,#ff5963,#a7232b);}
+.pill-mid{background:linear-gradient(135deg,#198eff,#0b4f93);}
+.pill-low,.pill-done{background:linear-gradient(135deg,#62df69,#268034);color:#041b08;}
+.pill-notify{background:linear-gradient(135deg,#ffe071,#c79a21);color:#2d2100;}
+.sync-status{color:#ffe078;}
+input:focus,select:focus,textarea:focus{
+  outline:none;
+  border-color:#4ba9ff !important;
+  box-shadow:0 0 0 2px rgba(55,156,255,.14),0 0 12px rgba(64,211,77,.07);
+}
+
 /* ===== LOGIN / AUTH : THUNDER x GAMMA ===== */
 .auth-gate{position:fixed;inset:0;z-index:99999;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:24px;background:
   radial-gradient(circle at 18% 20%,rgba(70,145,255,.28),transparent 28%),
