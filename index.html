@@ -226,6 +226,159 @@ input:focus,select:focus,textarea:focus{
   box-shadow:0 0 0 2px rgba(55,156,255,.14),0 0 12px rgba(64,211,77,.07);
 }
 
+
+/* ===== HOLIDAY TABLE LAYOUT + DATE STATUS ===== */
+.holiday-table{
+  width:100%;
+  table-layout:fixed;
+}
+.holiday-table th,
+.holiday-table td{
+  vertical-align:middle;
+}
+.holiday-table th:nth-child(1),
+.holiday-table td:nth-child(1){width:7%;text-align:center;}
+.holiday-table th:nth-child(2),
+.holiday-table td:nth-child(2){width:12%;}
+.holiday-table th:nth-child(3),
+.holiday-table td:nth-child(3){width:18%;}
+.holiday-table th:nth-child(4),
+.holiday-table td:nth-child(4){width:35%;}
+.holiday-table th:nth-child(5),
+.holiday-table td:nth-child(5){width:21%;text-align:center;}
+.holiday-table th:nth-child(6),
+.holiday-table td:nth-child(6){width:7%;text-align:center;}
+
+.holiday-table .holiday-status{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  min-width:112px;
+  white-space:nowrap;
+}
+.holiday-table tr.holiday-past td{
+  opacity:.62;
+  background:rgba(110,125,145,.07);
+}
+.holiday-table tr.holiday-past td:nth-child(3){
+  text-decoration:line-through;
+  text-decoration-thickness:1px;
+}
+.holiday-table tr.holiday-today td{
+  background:linear-gradient(90deg,rgba(255,210,74,.16),rgba(255,210,74,.06));
+  box-shadow:inset 3px 0 0 #ffd24a;
+}
+.holiday-table tr.holiday-upcoming td{
+  background:linear-gradient(90deg,rgba(45,151,255,.07),rgba(69,211,81,.045));
+}
+.pill-holiday-past{
+  background:#303b48;
+  color:#b9c7d4;
+  border:1px solid #596978;
+}
+.pill-holiday-today{
+  background:linear-gradient(135deg,#ffe37a,#c99d23);
+  color:#2d2100;
+  border:1px solid #ffe99b;
+  box-shadow:0 0 10px rgba(255,210,74,.24);
+}
+.pill-holiday-upcoming{
+  background:linear-gradient(135deg,#168fff,#236f34);
+  color:#fff;
+  border:1px solid rgba(117,205,255,.34);
+}
+@media (max-width:760px){
+  .holiday-table{table-layout:auto;min-width:760px;}
+  .holiday-table th:nth-child(n),
+  .holiday-table td:nth-child(n){width:auto;}
+}
+
+
+/* ===== TABLE COLUMN HOVER : THOR ⚡ vs HULK 💚 ===== */
+table{
+  position:relative;
+}
+table th,
+table td{
+  position:relative;
+  transition:
+    background .18s ease,
+    box-shadow .18s ease,
+    transform .18s ease,
+    color .18s ease;
+}
+
+/* THOR — odd columns */
+table th:nth-child(odd):hover,
+table td:nth-child(odd):hover{
+  color:#ffffff;
+  background:
+    linear-gradient(135deg,rgba(39,154,255,.34),rgba(8,56,111,.58)) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(150,215,255,.58),
+    inset 0 0 18px rgba(61,166,255,.30),
+    0 0 14px rgba(43,151,255,.38);
+  transform:translateY(-1px);
+  z-index:2;
+}
+table th:nth-child(odd):hover::after,
+table td:nth-child(odd):hover::after{
+  content:"⚡";
+  position:absolute;
+  right:6px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:14px;
+  text-shadow:
+    0 0 5px #fff,
+    0 0 10px #57b5ff,
+    0 0 16px #168dff;
+  animation:thorSpark .7s ease-in-out infinite alternate;
+  pointer-events:none;
+}
+
+/* HULK — even columns */
+table th:nth-child(even):hover,
+table td:nth-child(even):hover{
+  color:#ffffff;
+  background:
+    linear-gradient(135deg,rgba(70,221,83,.30),rgba(15,85,30,.60)) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(150,255,161,.46),
+    inset 0 0 18px rgba(73,221,87,.24),
+    0 0 14px rgba(62,211,76,.32);
+  transform:translateY(-1px);
+  z-index:2;
+}
+table th:nth-child(even):hover::after,
+table td:nth-child(even):hover::after{
+  content:"💥";
+  position:absolute;
+  right:6px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:13px;
+  filter:drop-shadow(0 0 6px rgba(92,255,102,.78));
+  animation:hulkPulse .75s ease-in-out infinite alternate;
+  pointer-events:none;
+}
+
+@keyframes thorSpark{
+  0%{opacity:.55; transform:translateY(-50%) scale(.82) rotate(-7deg);}
+  100%{opacity:1; transform:translateY(-50%) scale(1.12) rotate(7deg);}
+}
+@keyframes hulkPulse{
+  0%{opacity:.58; transform:translateY(-50%) scale(.88);}
+  100%{opacity:1; transform:translateY(-50%) scale(1.16);}
+}
+
+/* Keep action buttons readable when hovering their cells */
+table td:hover .btn{
+  position:relative;
+  z-index:3;
+}
+
 /* ===== LOGIN / AUTH : THUNDER x GAMMA ===== */
 .auth-gate{position:fixed;inset:0;z-index:99999;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:24px;background:
   radial-gradient(circle at 18% 20%,rgba(70,145,255,.28),transparent 28%),
@@ -412,7 +565,7 @@ body.auth-locked > header,body.auth-locked > nav,body.auth-locked > main{filter:
 
     <div class="card">
       <div class="card-head">🔴 Fairtex วันหยุดประจำปี <button class="btn btn-red" onclick="openHolidayModal()">＋ เพิ่มวันหยุด</button></div>
-      <table>
+      <table class="holiday-table">
         <thead><tr><th>ลำดับ</th><th>วัน</th><th>วันที่</th><th>ชื่อของวันหยุด</th><th>แจ้งเตือน</th><th></th></tr></thead>
         <tbody id="holidayBody"></tbody>
       </table>
@@ -986,13 +1139,31 @@ function dutyNotifyCell(dstr){
   if(diff >= 0 && diff <= 7) return `<span class="pill pill-notify">🎁 อีก ${diff} วัน</span>`;
   return '<span class="dim">—</span>';
 }
-function holidayNotifyCell(dstr){
+function holidayDateState(dstr){
   const today = new Date(); today.setHours(0,0,0,0);
   const d = new Date(dstr); d.setHours(0,0,0,0);
-  if(isNaN(d)) return '<span class="dim">—</span>';
-  return d < today
-    ? '<span class="pill pill-passed">ผ่านไปแล้ว</span>'
-    : '<span class="dim">—</span>';
+  if(isNaN(d)) return {key:'unknown', diff:null};
+  const diff = Math.round((d-today)/86400000);
+  if(diff < 0) return {key:'past', diff};
+  if(diff === 0) return {key:'today', diff:0};
+  return {key:'upcoming', diff};
+}
+function holidayNotifyCell(dstr){
+  const s = holidayDateState(dstr);
+  if(s.key === 'past') return '<span class="pill holiday-status pill-holiday-past">✓ ผ่านแล้ว</span>';
+  if(s.key === 'today') return '<span class="pill holiday-status pill-holiday-today">🎉 วันนี้</span>';
+  if(s.key === 'upcoming'){
+    const txt = s.diff === 1 ? 'พรุ่งนี้' : `อีก ${s.diff} วัน`;
+    return `<span class="pill holiday-status pill-holiday-upcoming">⏳ ${txt}</span>`;
+  }
+  return '<span class="dim">—</span>';
+}
+function holidayRowClass(dstr){
+  const s = holidayDateState(dstr);
+  return s.key === 'past' ? 'holiday-past'
+       : s.key === 'today' ? 'holiday-today'
+       : s.key === 'upcoming' ? 'holiday-upcoming'
+       : '';
 }
 
 function renderCalendar(){
@@ -1023,7 +1194,7 @@ function renderCalendar(){
   const hol = state.holidays.filter(h=>filterByDate(h.date)).sort((a,b)=>a.date.localeCompare(b.date));
   const holBody = document.getElementById('holidayBody');
   holBody.innerHTML = hol.length ? hol.map((h,i)=>`
-    <tr>
+    <tr class="${holidayRowClass(h.date)}">
       <td>${i+1}</td>
       <td>${esc(h.day)}</td>
       <td>${thaiDate(h.date)}</td>
