@@ -413,6 +413,61 @@ table td:hover .btn{
 body.auth-locked > header,body.auth-locked > nav,body.auth-locked > main{filter:blur(3px);pointer-events:none;user-select:none}
 @media(max-width:900px){.auth-arena{grid-template-columns:1fr}.hero-side{display:none}.auth-card{margin:auto}}
 
+
+/* ===== HOLIDAY TABLE BALANCED COLUMNS + STRONG THOR LIGHTNING ===== */
+.holiday-table th:nth-child(1), .holiday-table td:nth-child(1){width:7%;text-align:center;}
+.holiday-table th:nth-child(2), .holiday-table td:nth-child(2){width:12%;}
+.holiday-table th:nth-child(3), .holiday-table td:nth-child(3){width:18%;}
+.holiday-table th:nth-child(4), .holiday-table td:nth-child(4){width:30%;}
+.holiday-table th:nth-child(5), .holiday-table td:nth-child(5){width:26%;text-align:center;}
+.holiday-table th:nth-child(6), .holiday-table td:nth-child(6){width:7%;text-align:center;}
+
+/* stronger Thor hover */
+table th:nth-child(odd):hover,
+table td:nth-child(odd):hover{
+  background:linear-gradient(135deg,rgba(56,178,255,.55),rgba(4,45,100,.82)) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(220,242,255,.9),
+    inset 0 0 32px rgba(79,184,255,.55),
+    0 0 20px rgba(48,169,255,.85),
+    0 0 38px rgba(48,169,255,.32);
+}
+table th:nth-child(odd):hover::after,
+table td:nth-child(odd):hover::after{
+  content:"⚡";
+  right:8px;
+  font-size:24px;
+  font-weight:900;
+  line-height:1;
+  text-shadow:
+    0 0 2px #fff,
+    0 0 6px #fff,
+    0 0 12px #8fd0ff,
+    0 0 22px #2aa7ff,
+    0 0 34px #168dff;
+  filter:brightness(1.8);
+  animation:thorSparkStrong .34s ease-in-out infinite alternate;
+}
+@keyframes thorSparkStrong{
+  0%{opacity:.82;transform:translateY(-50%) scale(1) rotate(-11deg);filter:brightness(1.35);}
+  100%{opacity:1;transform:translateY(-50%) scale(1.38) rotate(9deg);filter:brightness(2.15);}
+}
+
+/* stronger Hulk hover for balance */
+table th:nth-child(even):hover,
+table td:nth-child(even):hover{
+  background:linear-gradient(135deg,rgba(82,238,97,.46),rgba(12,74,25,.8)) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(194,255,201,.75),
+    inset 0 0 28px rgba(84,236,98,.42),
+    0 0 18px rgba(64,221,78,.6);
+}
+table th:nth-child(even):hover::after,
+table td:nth-child(even):hover::after{
+  font-size:20px;
+  filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 12px rgba(92,255,102,1));
+}
+
 </style>
 </head>
 <body>
