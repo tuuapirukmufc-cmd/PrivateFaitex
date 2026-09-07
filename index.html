@@ -605,6 +605,230 @@ table td:nth-child(even):hover::after{
   .modal-backdrop .form-grid label[style*="grid-column"]{grid-column:auto !important;}
 }
 
+
+/* ===== FAIRTEX OFFICIAL COLOR THEME : RED / BLUE / WHITE / BLACK ===== */
+:root{
+  --bg:#f4f7fb;
+  --panel:#ffffff;
+  --panel2:#f8fafc;
+  --border:#d7e0ea;
+  --red1:#ed1c24;
+  --red2:#b9141b;
+  --blue1:#165aa7;
+  --blue2:#0d3f7a;
+  --text:#17212b;
+  --sub:#667789;
+  --danger:#ed1c24;
+  --warn:#f0ad24;
+  --ok:#198754;
+  --accent:#165aa7;
+  --gold:#d9a61c;
+}
+html,body{
+  background:#f4f7fb !important;
+  color:#17212b !important;
+}
+body{
+  background-image:
+    radial-gradient(circle at 10% 0%,rgba(237,28,36,.055),transparent 27%),
+    radial-gradient(circle at 92% 2%,rgba(22,90,167,.07),transparent 30%) !important;
+}
+header{
+  background:
+    linear-gradient(100deg,#ffffff 0 27%,#f7f9fc 27% 100%) !important;
+  border-bottom:3px solid #ed1c24 !important;
+  box-shadow:0 4px 18px rgba(20,40,70,.12) !important;
+  color:#111 !important;
+}
+.brand,.brand *{color:#111 !important;text-shadow:none !important}
+.brand .logo{
+  background:#fff !important;
+  border:2px solid #111 !important;
+  box-shadow:0 2px 8px rgba(0,0,0,.12) !important;
+}
+.clock-box,.user-chip{
+  background:#fff !important;
+  color:#17212b !important;
+  border:1px solid #cbd7e3 !important;
+  box-shadow:none !important;
+}
+.period{
+  background:#f4f6f9 !important;
+  color:#526170 !important;
+  border:1px solid #d3dde7 !important;
+}
+.period.active{
+  background:#165aa7 !important;
+  color:#fff !important;
+  border-color:#0d3f7a !important;
+  box-shadow:0 3px 10px rgba(22,90,167,.22) !important;
+}
+.tabs{border-bottom-color:#cfd9e3 !important}
+.tab{
+  background:#fff !important;
+  color:#4d5c6b !important;
+  border:1px solid #d2dce6 !important;
+}
+.tab.active{
+  background:#165aa7 !important;
+  color:#fff !important;
+  border-color:#165aa7 !important;
+  box-shadow:inset 4px 0 0 #ed1c24 !important;
+}
+.toolbar,.card,.modal{
+  background:#fff !important;
+  color:#17212b !important;
+  border-color:#d4dee8 !important;
+  box-shadow:0 3px 14px rgba(28,48,72,.08) !important;
+}
+.card-head{
+  background:linear-gradient(90deg,#165aa7 0%,#0d4a8d 76%,#ed1c24 76%,#ed1c24 100%) !important;
+  color:#fff !important;
+  border-bottom:0 !important;
+  text-shadow:none !important;
+}
+th{
+  background:#eef3f8 !important;
+  color:#123f73 !important;
+  border-bottom:2px solid #165aa7 !important;
+}
+td{
+  color:#263543 !important;
+  border-bottom-color:#e1e7ee !important;
+  background:#fff;
+}
+tr:hover td{
+  background:#f1f6fc !important;
+}
+.month-group-head{
+  background:#eaf1f8 !important;
+  color:#123f73 !important;
+}
+input,select,textarea{
+  background:#fff !important;
+  color:#17212b !important;
+  border-color:#cbd6e1 !important;
+}
+input::placeholder,textarea::placeholder{color:#8996a3 !important}
+input:focus,select:focus,textarea:focus{
+  border-color:#165aa7 !important;
+  box-shadow:0 0 0 3px rgba(22,90,167,.12) !important;
+}
+.btn{
+  box-shadow:none !important;
+}
+.btn-blue,.btn-green{
+  background:#165aa7 !important;
+  color:#fff !important;
+  border:1px solid #0d4a8d !important;
+}
+.btn-red{
+  background:#ed1c24 !important;
+  color:#fff !important;
+  border:1px solid #c4151c !important;
+}
+.btn-purple{
+  background:#111820 !important;
+  color:#fff !important;
+  border:1px solid #111820 !important;
+}
+.btn-outline{
+  background:#fff !important;
+  color:#165aa7 !important;
+  border:1px solid #9eb4c8 !important;
+}
+.btn:hover{filter:brightness(.96) !important;transform:translateY(-1px)}
+.pill-high{background:#ed1c24 !important;color:#fff !important}
+.pill-mid{background:#165aa7 !important;color:#fff !important}
+.pill-low,.pill-done{background:#e7f5ed !important;color:#17683d !important;border:1px solid #b9dfc9 !important}
+.pill-notify{background:#fff3cd !important;color:#735600 !important;border:1px solid #ecd481 !important}
+.sync-status{color:#17683d !important}
+.dim,.sub{color:#71808f !important}
+
+/* Check Air dashboard */
+.air-stat{
+  background:#fff !important;
+  color:#17212b !important;
+  border:1px solid #d4dee8 !important;
+  box-shadow:0 2px 10px rgba(30,50,75,.06) !important;
+}
+.air-stat:nth-child(1){border-top:4px solid #165aa7 !important}
+.air-stat:nth-child(2){border-top:4px solid #198754 !important}
+.air-stat:nth-child(3){border-top:4px solid #f0ad24 !important}
+.air-stat:nth-child(4){border-top:4px solid #ed1c24 !important}
+.air-stat:nth-child(5){border-top:4px solid #111820 !important}
+.air-history-chip{
+  background:#f5f8fb !important;
+  color:#273746 !important;
+  border-color:#d3dde7 !important;
+}
+
+/* Holiday states remain easy to read */
+.holiday-table tr.holiday-past td{background:#f5f6f7 !important;color:#87929d !important}
+.holiday-table tr.holiday-today td{background:#fff7dc !important}
+.holiday-table tr.holiday-upcoming td{background:#f4f8fd !important}
+.pill-holiday-past{background:#e8ecef !important;color:#66717c !important}
+.pill-holiday-today{background:#ffd75a !important;color:#332600 !important}
+.pill-holiday-upcoming{background:#165aa7 !important;color:#fff !important}
+
+/* Replace Thor/Hulk table hover with Fairtex red/blue focus */
+table th:nth-child(odd):hover,
+table td:nth-child(odd):hover{
+  color:#0f3157 !important;
+  background:#eaf3fd !important;
+  box-shadow:inset 4px 0 0 #165aa7,0 0 0 1px rgba(22,90,167,.12) !important;
+  transform:none !important;
+}
+table th:nth-child(even):hover,
+table td:nth-child(even):hover{
+  color:#5b171a !important;
+  background:#fff0f1 !important;
+  box-shadow:inset 4px 0 0 #ed1c24,0 0 0 1px rgba(237,28,36,.10) !important;
+  transform:none !important;
+}
+table th:hover::after,table td:hover::after{content:none !important}
+
+/* Modal */
+.modal-backdrop{
+  background:rgba(7,15,25,.72) !important;
+  backdrop-filter:blur(5px);
+}
+.modal-backdrop .modal{
+  background:#fff !important;
+  border:1px solid #b8c7d5 !important;
+  box-shadow:0 24px 70px rgba(0,0,0,.30) !important;
+}
+.modal-backdrop .modal-head{
+  background:linear-gradient(90deg,#165aa7 0%,#165aa7 78%,#ed1c24 78%) !important;
+  color:#fff !important;
+  border-bottom:0 !important;
+}
+.modal-backdrop .modal-body{background:#fff !important}
+.modal-backdrop .modal-foot{
+  background:#f5f7fa !important;
+  border-top:1px solid #dce3ea !important;
+}
+.modal-backdrop .form-grid label{color:#263746 !important}
+.modal-backdrop .form-grid input,
+.modal-backdrop .form-grid select,
+.modal-backdrop .form-grid textarea{
+  background:#fff !important;
+  color:#17212b !important;
+  border-color:#c8d4df !important;
+}
+
+/* Login gate follows Fairtex palette */
+#authGate,.auth-gate{
+  background:
+    radial-gradient(circle at 18% 18%,rgba(237,28,36,.22),transparent 28%),
+    radial-gradient(circle at 82% 18%,rgba(22,90,167,.30),transparent 30%),
+    #08111b !important;
+}
+.login-card,.auth-card{
+  border-color:rgba(255,255,255,.28) !important;
+  box-shadow:0 24px 70px rgba(0,0,0,.48) !important;
+}
+
 </style>
 </head>
 <body>
