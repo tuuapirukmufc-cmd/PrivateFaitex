@@ -468,6 +468,44 @@ table td:nth-child(even):hover::after{
   filter:drop-shadow(0 0 4px #fff) drop-shadow(0 0 12px rgba(92,255,102,1));
 }
 
+
+/* ===== CHECK AIR PAGE ===== */
+.air-dashboard{display:grid;grid-template-columns:repeat(5,minmax(150px,1fr));gap:10px;margin-bottom:12px}
+.air-stat{background:linear-gradient(135deg,rgba(26,112,184,.18),rgba(45,150,60,.10)),var(--panel);border:1px solid var(--border);border-radius:10px;padding:14px;box-shadow:0 4px 16px rgba(0,0,0,.28)}
+.air-stat .num{font-size:26px;font-weight:900;color:#fff;margin-top:4px}.air-stat .label{font-size:12px;color:var(--sub);font-weight:800}.air-stat.overdue{border-color:#e05058}.air-stat.due{border-color:#e6bd3d}.air-stat.repair{border-color:#7ccf65}.air-stat.ok{border-color:#3798e8}
+.air-toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+.air-toolbar input,.air-toolbar select{min-width:150px}
+.air-table{table-layout:fixed;min-width:1280px}.air-table th,.air-table td{vertical-align:middle}.air-table th:nth-child(1),.air-table td:nth-child(1){width:7%}.air-table th:nth-child(2),.air-table td:nth-child(2){width:10%}.air-table th:nth-child(3),.air-table td:nth-child(3){width:13%}.air-table th:nth-child(4),.air-table td:nth-child(4){width:12%}.air-table th:nth-child(5),.air-table td:nth-child(5){width:8%}.air-table th:nth-child(6),.air-table td:nth-child(6){width:10%}.air-table th:nth-child(7),.air-table td:nth-child(7){width:10%}.air-table th:nth-child(8),.air-table td:nth-child(8){width:12%}.air-table th:nth-child(9),.air-table td:nth-child(9){width:10%}.air-table th:nth-child(10),.air-table td:nth-child(10){width:8%}
+.air-status{display:inline-flex;align-items:center;justify-content:center;gap:4px;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:900;white-space:nowrap}.air-ok{background:#173c63;color:#9fd2ff;border:1px solid #2e76b4}.air-due{background:#5c4b12;color:#ffe786;border:1px solid #a88a25}.air-overdue{background:#5c2026;color:#ffafb5;border:1px solid #a7424b}.air-repair{background:#254a2a;color:#b8ffbf;border:1px solid #4b9555}.air-off{background:#303944;color:#c5d0dc;border:1px solid #566474}
+.air-row-overdue td{background:rgba(175,45,55,.07)}.air-row-due td{background:rgba(224,190,58,.055)}.air-row-repair td{background:rgba(63,170,72,.055)}
+.phone-link{color:#7fc5ff;text-decoration:none;font-weight:800;white-space:nowrap}.phone-link:hover{text-decoration:underline;color:#b9e0ff}.tech-cell{line-height:1.45}.tech-name{font-weight:800;color:#fff}.tech-phone{font-size:12px}
+.air-note{max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--sub)}
+@media(max-width:900px){.air-dashboard{grid-template-columns:repeat(2,minmax(140px,1fr))}.air-stat:last-child{grid-column:span 2}.air-table{table-layout:auto}}
+
+
+/* ===== CHECK AIR HISTORY ===== */
+.air-history-toolbar{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.air-history-toolbar select,.air-history-toolbar input{min-width:140px}
+.air-history-summary{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.air-history-chip{padding:7px 10px;border-radius:999px;border:1px solid var(--border);background:#0d1b27;font-size:12px;font-weight:800}
+.air-history-table{min-width:1180px;table-layout:fixed}
+.air-history-table th:nth-child(1),.air-history-table td:nth-child(1){width:9%}
+.air-history-table th:nth-child(2),.air-history-table td:nth-child(2){width:9%}
+.air-history-table th:nth-child(3),.air-history-table td:nth-child(3){width:12%}
+.air-history-table th:nth-child(4),.air-history-table td:nth-child(4){width:13%}
+.air-history-table th:nth-child(5),.air-history-table td:nth-child(5){width:22%}
+.air-history-table th:nth-child(6),.air-history-table td:nth-child(6){width:13%}
+.air-history-table th:nth-child(7),.air-history-table td:nth-child(7){width:9%}
+.air-history-table th:nth-child(8),.air-history-table td:nth-child(8){width:8%}
+.air-history-table th:nth-child(9),.air-history-table td:nth-child(9){width:5%}
+.work-type{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:900;white-space:nowrap}
+.work-clean{background:#123d63;color:#a9d8ff;border:1px solid #2d7dbb}
+.work-repair{background:#56252b;color:#ffb5ba;border:1px solid #a84b55}
+.work-check{background:#4b4316;color:#ffe58a;border:1px solid #9c872a}
+.work-part{background:#27482d;color:#c5ffca;border:1px solid #4e9458}
+.history-detail{white-space:normal;line-height:1.45}
+.history-empty{padding:28px;text-align:center;color:var(--sub)}
+
 </style>
 </head>
 <body>
@@ -537,6 +575,7 @@ table td:nth-child(even):hover::after{
 <nav>
   <div class="tab active" id="tabTodoBtn" onclick="switchTab('todo')">📄 TO DO LIST</div>
   <div class="tab" id="tabCalBtn" onclick="switchTab('cal')">✳ ปฏิทิน Fairtex</div>
+  <div class="tab" id="tabAirBtn" onclick="switchTab('air')">❄️ CHECK AIR</div>
 </nav>
 
 <main>
@@ -626,6 +665,62 @@ table td:nth-child(even):hover::after{
       </table>
     </div>
   </div>
+
+  <!-- CHECK AIR TAB -->
+  <div id="tabAir" style="display:none;">
+    <div class="air-dashboard">
+      <div class="air-stat"><div class="label">❄️ แอร์ทั้งหมด</div><div class="num" id="airTotal">0</div></div>
+      <div class="air-stat ok"><div class="label">🟢 ปกติ</div><div class="num" id="airOk">0</div></div>
+      <div class="air-stat due"><div class="label">🟡 ใกล้ถึงรอบล้าง</div><div class="num" id="airDue">0</div></div>
+      <div class="air-stat overdue"><div class="label">🔴 เกินกำหนด</div><div class="num" id="airOverdue">0</div></div>
+      <div class="air-stat repair"><div class="label">🔧 รอซ่อม / งดใช้งาน</div><div class="num" id="airRepair">0</div></div>
+    </div>
+
+    <div class="toolbar air-toolbar">
+      <input id="airSearch" type="text" placeholder="🔍 ค้นหารหัส / พื้นที่ / ยี่ห้อ / ช่าง" oninput="renderAir()">
+      <select id="airDeptFilter" onchange="renderAir()"><option value="">ทุกแผนก</option></select>
+      <select id="airStatusFilter" onchange="renderAir()"><option value="">ทุกสถานะ</option><option value="ok">ปกติ</option><option value="due">ใกล้ถึงรอบ</option><option value="overdue">เกินกำหนด</option><option value="repair">รอซ่อม</option><option value="off">งดใช้งาน</option></select>
+      <button class="btn btn-blue" onclick="openAirModal()">＋ เพิ่มเครื่องแอร์</button>
+    </div>
+
+    <div class="card">
+      <div class="card-head">❄️ Check Air — ตรวจเช็ค / ล้าง / ซ่อมแอร์ทั้งบริษัท <span class="badge-count" id="airCount">0</span></div>
+      <div style="overflow:auto;">
+        <table class="air-table">
+          <thead><tr><th>รหัส</th><th>แผนก/พื้นที่</th><th>ตำแหน่ง</th><th>ยี่ห้อ / รุ่น</th><th>BTU</th><th>ล้างล่าสุด</th><th>ล้างครั้งถัดไป</th><th>ช่าง / เบอร์ติดต่อ</th><th>สถานะ</th><th>จัดการ</th></tr></thead>
+          <tbody id="airBody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head">🧾 ประวัติงานแอร์ย้อนหลัง <span class="badge-count" id="airHistoryCount">0</span></div>
+      <div class="toolbar air-history-toolbar">
+        <input id="airHistorySearch" type="text" placeholder="🔍 ค้นหารหัส / งาน / ช่าง" oninput="renderAirHistory()">
+        <select id="airHistoryMonth" onchange="renderAirHistory()"></select>
+        <select id="airHistoryYear" onchange="renderAirHistory()"></select>
+        <select id="airHistoryType" onchange="renderAirHistory()">
+          <option value="">ทุกประเภทงาน</option>
+          <option value="clean">ล้างแอร์</option>
+          <option value="repair">ซ่อม</option>
+          <option value="check">ตรวจเช็ค</option>
+          <option value="part">เปลี่ยนอะไหล่</option>
+        </select>
+        <button class="btn btn-green" onclick="openAirHistoryModal()">＋ บันทึกงานแอร์</button>
+      </div>
+      <div class="air-history-summary">
+        <div class="air-history-chip">📌 รายการในช่วงนี้ <b id="airHistoryItems">0</b></div>
+        <div class="air-history-chip">💰 ค่าใช้จ่ายรวม <b id="airHistoryCost">0</b> บาท</div>
+      </div>
+      <div style="overflow:auto;">
+        <table class="air-history-table">
+          <thead><tr><th>วันที่</th><th>รหัสแอร์</th><th>ประเภทงาน</th><th>แผนก/ตำแหน่ง</th><th>รายละเอียด</th><th>ช่าง / เบอร์</th><th>ค่าใช้จ่าย</th><th>สถานะ</th><th></th></tr></thead>
+          <tbody id="airHistoryBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
 </main>
 
 <div id="modalRoot"></div>
@@ -727,7 +822,9 @@ let state = {
   todos: [],
   depts: ["วางแผนการผลิต","จัดซื้อ","คลังสินค้า","บัญชี"],
   saturdayDuty: SEED_DUTY.slice(),
-  holidays: SEED_HOLIDAYS.slice()
+  holidays: SEED_HOLIDAYS.slice(),
+  airUnits: [],
+  airHistory: []
 };
 
 /* ============ CLOCK / PERIODS ============ */
@@ -759,8 +856,11 @@ setInterval(updateClock,1000); updateClock();
 function switchTab(t){
   document.getElementById('tabTodo').style.display = t==='todo' ? '' : 'none';
   document.getElementById('tabCal').style.display = t==='cal' ? '' : 'none';
+  document.getElementById('tabAir').style.display = t==='air' ? '' : 'none';
   document.getElementById('tabTodoBtn').classList.toggle('active', t==='todo');
   document.getElementById('tabCalBtn').classList.toggle('active', t==='cal');
+  document.getElementById('tabAirBtn').classList.toggle('active', t==='air');
+  if(t==='air'){ renderAir(); renderAirHistory(); }
 }
 
 /* ============ FIREBASE SYNC ============ */
@@ -813,17 +913,21 @@ async function syncFromFirebase(){
   if(!auth.currentUser){ setSyncStatus('กรุณาเข้าสู่ระบบ'); return; }
   document.getElementById('syncStatus').textContent = "กำลังซิงค์ Firebase...";
   try{
-    const [todos, depts, duties, holidays] = await Promise.all([
+    const [todos, depts, duties, holidays, airUnits, airHistory] = await Promise.all([
       readCollection('todos'),
       readCollection('departments'),
       readCollection('saturdayDuty'),
-      readCollection('holidays')
+      readCollection('holidays'),
+      readCollection('airUnits'),
+      readCollection('airHistory')
     ]);
 
     state.todos = todos.map(normalizeTodo);
     state.depts = depts.map(d=>d.name).filter(Boolean);
     state.saturdayDuty = duties.map(normalizeDuty);
     state.holidays = holidays.map(normalizeHoliday);
+    state.airUnits = airUnits.map(normalizeAir);
+    state.airHistory = airHistory.map(normalizeAirHistory);
 
     renderAll();
     document.getElementById('syncStatus').textContent = "✓ Firebase ซิงค์สำเร็จ " + new Date().toLocaleTimeString('th-TH',{hour12:false});
@@ -864,6 +968,8 @@ async function pushToFirebase(){
     await replaceCollection('departments', state.depts.map(name=>({id:uid(), name})));
     await replaceCollection('saturdayDuty', state.saturdayDuty);
     await replaceCollection('holidays', state.holidays);
+    await replaceCollection('airUnits', state.airUnits);
+    await replaceCollection('airHistory', state.airHistory);
 
     document.getElementById('syncStatus').textContent = "✓ บันทึก Firebase สำเร็จ " + new Date().toLocaleTimeString('th-TH',{hour12:false});
   }catch(err){
@@ -885,6 +991,285 @@ function normalizeDuty(d){
   return {id:d.id||uid(), date:d.date||'', name:d.name||'', confirmed, notify:d.notify||''};
 }
 function normalizeHoliday(h){ return {id:h.id||uid(), order:h.order||'', day:h.day||'', date:h.date||'', name:h.name||'', notify:h.notify||''}; }
+function normalizeAir(a){
+  return {id:a.id||uid(), code:a.code||'', dept:a.dept||'', location:a.location||'', brand:a.brand||'', model:a.model||'', btu:a.btu||'', lastClean:a.lastClean||'', intervalMonths:Number(a.intervalMonths||4), techName:a.techName||'', techPhone:a.techPhone||'', condition:a.condition||'active', notes:a.notes||'', updatedAt:a.updatedAt||''};
+}
+
+function normalizeAirHistory(h){
+  return {
+    id:h.id||uid(),
+    airId:h.airId||'',
+    airCode:h.airCode||'',
+    dept:h.dept||'',
+    location:h.location||'',
+    workDate:h.workDate||'',
+    workType:h.workType||'check',
+    detail:h.detail||'',
+    techName:h.techName||'',
+    techPhone:h.techPhone||'',
+    cost:Number(h.cost||0),
+    status:h.status||'done',
+    notes:h.notes||'',
+    createdAt:h.createdAt||''
+  };
+}
+
+
+
+
+/* ============ CHECK AIR ============ */
+function addMonthsISO(dateStr, months){
+  if(!dateStr) return '';
+  const d = new Date(dateStr+'T00:00:00');
+  if(isNaN(d)) return '';
+  const day = d.getDate();
+  d.setDate(1); d.setMonth(d.getMonth()+Number(months||0));
+  const last = new Date(d.getFullYear(),d.getMonth()+1,0).getDate();
+  d.setDate(Math.min(day,last));
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+function airComputedStatus(a){
+  if(a.condition==='repair') return {key:'repair',label:'🔧 รอซ่อม'};
+  if(a.condition==='off') return {key:'off',label:'⚫ งดใช้งาน'};
+  const next=addMonthsISO(a.lastClean,a.intervalMonths);
+  if(!next) return {key:'due',label:'🟡 ยังไม่ระบุรอบ'};
+  const t=new Date(); t.setHours(0,0,0,0);
+  const n=new Date(next+'T00:00:00'); n.setHours(0,0,0,0);
+  const diff=Math.round((n-t)/86400000);
+  if(diff<0) return {key:'overdue',label:`🔴 เกิน ${Math.abs(diff)} วัน`};
+  if(diff<=30) return {key:'due',label:diff===0?'🟡 ถึงรอบวันนี้':`🟡 อีก ${diff} วัน`};
+  return {key:'ok',label:'🟢 ปกติ'};
+}
+function formatThaiDateAir(s){
+  if(!s) return '—';
+  const d=new Date(s+'T00:00:00'); if(isNaN(d)) return esc(s);
+  return `${d.getDate()} ${thaiMonths[d.getMonth()]} ${d.getFullYear()+543}`;
+}
+function safePhoneHref(p){ return String(p||'').replace(/[^0-9+]/g,''); }
+function fillAirDeptFilter(){
+  const el=document.getElementById('airDeptFilter'); if(!el) return;
+  const cur=el.value;
+  const vals=[...new Set(state.airUnits.map(a=>a.dept).filter(Boolean))].sort();
+  el.innerHTML='<option value="">ทุกแผนก</option>'+vals.map(x=>`<option value="${esc(x)}">${esc(x)}</option>`).join('');
+  el.value=cur;
+}
+function renderAir(){
+  const body=document.getElementById('airBody'); if(!body) return;
+  fillAirDeptFilter();
+  const q=(document.getElementById('airSearch')?.value||'').trim().toLowerCase();
+  const dept=document.getElementById('airDeptFilter')?.value||'';
+  const sf=document.getElementById('airStatusFilter')?.value||'';
+  const all=state.airUnits.map(a=>({a,s:airComputedStatus(a)}));
+  const counts={ok:0,due:0,overdue:0,repair:0,off:0}; all.forEach(x=>counts[x.s.key]=(counts[x.s.key]||0)+1);
+  document.getElementById('airTotal').textContent=state.airUnits.length;
+  document.getElementById('airOk').textContent=counts.ok||0;
+  document.getElementById('airDue').textContent=counts.due||0;
+  document.getElementById('airOverdue').textContent=counts.overdue||0;
+  document.getElementById('airRepair').textContent=(counts.repair||0)+(counts.off||0);
+  let rows=all.filter(({a,s})=>{
+    const hay=[a.code,a.dept,a.location,a.brand,a.model,a.techName,a.techPhone,a.notes].join(' ').toLowerCase();
+    return (!q||hay.includes(q))&&(!dept||a.dept===dept)&&(!sf||s.key===sf);
+  });
+  document.getElementById('airCount').textContent=rows.length;
+  body.innerHTML=rows.length?rows.map(({a,s})=>{
+    const next=addMonthsISO(a.lastClean,a.intervalMonths);
+    const rowCls=s.key==='overdue'?'air-row-overdue':s.key==='due'?'air-row-due':s.key==='repair'?'air-row-repair':'';
+    const tech=a.techName||a.techPhone?`<div class="tech-cell"><div class="tech-name">${esc(a.techName||'ช่าง')}</div><div class="tech-phone">${a.techPhone?`📞 <a class="phone-link" href="tel:${safePhoneHref(a.techPhone)}">${esc(a.techPhone)}</a>`:'—'}</div></div>`:'—';
+    return `<tr class="${rowCls}"><td><b>${esc(a.code||'—')}</b></td><td>${esc(a.dept||'—')}</td><td>${esc(a.location||'—')}</td><td>${esc([a.brand,a.model].filter(Boolean).join(' / ')||'—')}</td><td>${esc(a.btu||'—')}</td><td>${formatThaiDateAir(a.lastClean)}</td><td>${formatThaiDateAir(next)}<div class="dim">ทุก ${a.intervalMonths||4} เดือน</div></td><td>${tech}</td><td><span class="air-status air-${s.key}">${s.label}</span></td><td><button class="btn btn-green" onclick="openAirHistoryModal('', '${a.id}')">＋งาน</button> <button class="btn btn-outline" onclick="openAirHistoryFor('${a.id}')">ประวัติ</button> <button class="btn btn-outline" onclick="openAirModal('${a.id}')">แก้ไข</button> <button class="btn btn-red" onclick="deleteAir('${a.id}')">🗑</button></td></tr>`;
+  }).join(''):'<tr><td colspan="10" class="dim" style="text-align:center;padding:28px">ยังไม่มีข้อมูลเครื่องแอร์ — กด “＋ เพิ่มเครื่องแอร์” เพื่อเริ่มใช้งาน</td></tr>';
+}
+function openAirModal(id=''){
+  const a=id?state.airUnits.find(x=>x.id===id):null;
+  const v=a||normalizeAir({});
+  document.getElementById('modalRoot').innerHTML=`<div class="modal-backdrop" onclick="if(event.target===this)closeModal()"><div class="modal" style="max-width:760px"><div class="modal-head"><b>❄️ ${a?'แก้ไขข้อมูลเครื่องแอร์':'เพิ่มเครื่องแอร์'}</b><button class="btn btn-outline" onclick="closeModal()">✕</button></div><div class="modal-body">
+    <div class="form-grid">
+      <label>รหัสเครื่อง<input id="airCode" value="${esc(v.code)}" placeholder="เช่น AC-001"></label>
+      <label>แผนก / พื้นที่<input id="airDept" value="${esc(v.dept)}" placeholder="เช่น จัดซื้อ"></label>
+      <label>ตำแหน่งติดตั้ง<input id="airLocation" value="${esc(v.location)}" placeholder="เช่น ห้องจัดซื้อ ชั้น 2"></label>
+      <label>ยี่ห้อ<input id="airBrand" value="${esc(v.brand)}" placeholder="Daikin / Mitsubishi"></label>
+      <label>รุ่น<input id="airModel" value="${esc(v.model)}"></label>
+      <label>BTU<input id="airBtu" value="${esc(v.btu)}" placeholder="18000"></label>
+      <label>วันที่ล้างล่าสุด<input id="airLastClean" type="date" value="${esc(v.lastClean)}"></label>
+      <label>รอบล้าง (เดือน)<input id="airInterval" type="number" min="1" max="24" value="${Number(v.intervalMonths||4)}"></label>
+      <label>ชื่อช่าง / บริษัทช่าง<input id="airTechName" value="${esc(v.techName)}" placeholder="เช่น ช่างสมชาย / ABC Service"></label>
+      <label>📞 เบอร์ติดต่อช่าง<input id="airTechPhone" inputmode="tel" value="${esc(v.techPhone)}" placeholder="08x-xxx-xxxx"></label>
+      <label>สถานะเครื่อง<select id="airCondition"><option value="active" ${v.condition==='active'?'selected':''}>ใช้งานปกติ</option><option value="repair" ${v.condition==='repair'?'selected':''}>รอซ่อม</option><option value="off" ${v.condition==='off'?'selected':''}>งดใช้งาน</option></select></label>
+      <label style="grid-column:1/-1">หมายเหตุ<textarea id="airNotes" rows="3" placeholder="อาการเสีย / อะไหล่ / ข้อมูลเพิ่มเติม">${esc(v.notes)}</textarea></label>
+    </div>
+  </div><div class="modal-foot"><button class="btn btn-outline" onclick="closeModal()">ยกเลิก</button><button class="btn btn-green" onclick="saveAir('${id}')">💾 บันทึก</button></div></div></div>`;
+}
+async function saveAir(id=''){
+  const code=document.getElementById('airCode').value.trim();
+  if(!code){alert('กรุณาระบุรหัสเครื่องแอร์');return;}
+  const existing=id?state.airUnits.find(x=>x.id===id):null;
+  const item=normalizeAir({...(existing||{}),id:id||uid(),code,dept:document.getElementById('airDept').value.trim(),location:document.getElementById('airLocation').value.trim(),brand:document.getElementById('airBrand').value.trim(),model:document.getElementById('airModel').value.trim(),btu:document.getElementById('airBtu').value.trim(),lastClean:document.getElementById('airLastClean').value,intervalMonths:Number(document.getElementById('airInterval').value||4),techName:document.getElementById('airTechName').value.trim(),techPhone:document.getElementById('airTechPhone').value.trim(),condition:document.getElementById('airCondition').value,notes:document.getElementById('airNotes').value.trim(),updatedAt:new Date().toISOString()});
+  if(existing) Object.assign(existing,item); else state.airUnits.push(item);
+  closeModal(); renderAir();
+  try{await saveDocument('airUnits',item);}catch(err){handleFirebaseError('บันทึกข้อมูลแอร์',err);}
+}
+async function deleteAir(id){
+  const a=state.airUnits.find(x=>x.id===id); if(!a) return;
+  if(!confirm(`ลบข้อมูล ${a.code||'เครื่องแอร์นี้'} ?`)) return;
+  const backup=state.airUnits.slice(); state.airUnits=state.airUnits.filter(x=>x.id!==id); renderAir();
+  try{await deleteDocument('airUnits',id);}catch(err){state.airUnits=backup;renderAir();handleFirebaseError('ลบข้อมูลแอร์',err);}
+}
+
+
+/* ============ CHECK AIR HISTORY ============ */
+const AIR_WORK_TYPES = {
+  clean:{label:'🧼 ล้างแอร์',cls:'work-clean'},
+  repair:{label:'🔧 ซ่อม',cls:'work-repair'},
+  check:{label:'🔍 ตรวจเช็ค',cls:'work-check'},
+  part:{label:'⚙️ เปลี่ยนอะไหล่',cls:'work-part'}
+};
+function initAirHistoryFilters(){
+  const month=document.getElementById('airHistoryMonth');
+  const year=document.getElementById('airHistoryYear');
+  if(!month||!year) return;
+  const oldM=month.value, oldY=year.value;
+  month.innerHTML='<option value="">ทุกเดือน</option>'+thaiMonths.map((m,i)=>`<option value="${i+1}">${m}</option>`).join('');
+  const ys=[...new Set(state.airHistory.map(h=>h.workDate ? new Date(h.workDate+'T00:00:00').getFullYear() : null).filter(Boolean))];
+  const nowY=new Date().getFullYear();
+  if(!ys.includes(nowY)) ys.push(nowY);
+  ys.sort((a,b)=>b-a);
+  year.innerHTML='<option value="">ทุกปี</option>'+ys.map(y=>`<option value="${y}">${y+543}</option>`).join('');
+  month.value=oldM; year.value=oldY;
+}
+function airHistoryTypePill(type){
+  const x=AIR_WORK_TYPES[type]||AIR_WORK_TYPES.check;
+  return `<span class="work-type ${x.cls}">${x.label}</span>`;
+}
+function airHistoryStatusLabel(s){
+  if(s==='pending') return '🟡 รอดำเนินการ';
+  if(s==='cancel') return '⚫ ยกเลิก';
+  return '🟢 เสร็จแล้ว';
+}
+function renderAirHistory(){
+  const body=document.getElementById('airHistoryBody'); if(!body) return;
+  initAirHistoryFilters();
+  const q=(document.getElementById('airHistorySearch')?.value||'').trim().toLowerCase();
+  const m=Number(document.getElementById('airHistoryMonth')?.value||0);
+  const y=Number(document.getElementById('airHistoryYear')?.value||0);
+  const type=document.getElementById('airHistoryType')?.value||'';
+  let rows=state.airHistory.slice().filter(h=>{
+    const d=h.workDate?new Date(h.workDate+'T00:00:00'):null;
+    const hay=[h.airCode,h.dept,h.location,h.detail,h.techName,h.techPhone,h.notes].join(' ').toLowerCase();
+    return (!q||hay.includes(q))
+      &&(!m||(d&&d.getMonth()+1===m))
+      &&(!y||(d&&d.getFullYear()===y))
+      &&(!type||h.workType===type);
+  }).sort((a,b)=>(b.workDate||'').localeCompare(a.workDate||'')||(b.createdAt||'').localeCompare(a.createdAt||''));
+  document.getElementById('airHistoryCount').textContent=rows.length;
+  document.getElementById('airHistoryItems').textContent=rows.length;
+  document.getElementById('airHistoryCost').textContent=rows.reduce((s,h)=>s+Number(h.cost||0),0).toLocaleString('th-TH',{minimumFractionDigits:0,maximumFractionDigits:2});
+  body.innerHTML=rows.length?rows.map(h=>{
+    const tech=h.techName||h.techPhone?`<div class="tech-cell"><div class="tech-name">${esc(h.techName||'ช่าง')}</div><div class="tech-phone">${h.techPhone?`📞 <a class="phone-link" href="tel:${safePhoneHref(h.techPhone)}">${esc(h.techPhone)}</a>`:'—'}</div></div>`:'—';
+    return `<tr>
+      <td>${formatThaiDateAir(h.workDate)}</td>
+      <td><b>${esc(h.airCode||'—')}</b></td>
+      <td>${airHistoryTypePill(h.workType)}</td>
+      <td>${esc(h.dept||'—')}<div class="dim">${esc(h.location||'')}</div></td>
+      <td class="history-detail">${esc(h.detail||'—')}${h.notes?`<div class="dim">${esc(h.notes)}</div>`:''}</td>
+      <td>${tech}</td>
+      <td>${Number(h.cost||0).toLocaleString('th-TH')} บาท</td>
+      <td>${airHistoryStatusLabel(h.status)}</td>
+      <td><button class="btn btn-outline" onclick="openAirHistoryModal('${h.id}')">แก้ไข</button> <button class="btn btn-red" onclick="deleteAirHistory('${h.id}')">🗑</button></td>
+    </tr>`;
+  }).join(''):'<tr><td colspan="9" class="history-empty">ยังไม่มีประวัติงานในช่วงที่เลือก</td></tr>';
+}
+function openAirHistoryFor(airId){
+  const a=state.airUnits.find(x=>x.id===airId); if(!a) return;
+  const search=document.getElementById('airHistorySearch');
+  if(search) search.value=a.code||'';
+  renderAirHistory();
+  document.getElementById('airHistoryBody')?.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function openAirHistoryModal(id='', airId=''){
+  const h=id?state.airHistory.find(x=>x.id===id):null;
+  const unit=airId?state.airUnits.find(x=>x.id===airId):null;
+  const v=h||normalizeAirHistory({
+    airId:unit?.id||'',
+    airCode:unit?.code||'',
+    dept:unit?.dept||'',
+    location:unit?.location||'',
+    techName:unit?.techName||'',
+    techPhone:unit?.techPhone||'',
+    workDate:todayISO(),
+    workType:'clean',
+    status:'done'
+  });
+  const options=state.airUnits.slice().sort((a,b)=>(a.code||'').localeCompare(b.code||'')).map(a=>`<option value="${a.id}" ${v.airId===a.id?'selected':''}>${esc(a.code||'ไม่มีรหัส')} — ${esc(a.dept||'')} ${esc(a.location||'')}</option>`).join('');
+  document.getElementById('modalRoot').innerHTML=`<div class="modal-backdrop" onclick="if(event.target===this)closeModal()"><div class="modal" style="max-width:780px"><div class="modal-head"><b>🧾 ${h?'แก้ไขประวัติงาน':'บันทึกงานแอร์'}</b><button class="btn btn-outline" onclick="closeModal()">✕</button></div><div class="modal-body">
+    <div class="form-grid">
+      <label style="grid-column:1/-1">เครื่องแอร์<select id="histAirId" onchange="syncHistoryUnitFields()"><option value="">— เลือกเครื่องแอร์ —</option>${options}</select></label>
+      <label>วันที่ทำงาน<input id="histDate" type="date" value="${esc(v.workDate)}"></label>
+      <label>ประเภทงาน<select id="histType">
+        <option value="clean" ${v.workType==='clean'?'selected':''}>ล้างแอร์</option>
+        <option value="repair" ${v.workType==='repair'?'selected':''}>ซ่อม</option>
+        <option value="check" ${v.workType==='check'?'selected':''}>ตรวจเช็ค</option>
+        <option value="part" ${v.workType==='part'?'selected':''}>เปลี่ยนอะไหล่</option>
+      </select></label>
+      <label>ชื่อช่าง / บริษัท<input id="histTechName" value="${esc(v.techName)}"></label>
+      <label>📞 เบอร์ติดต่อ<input id="histTechPhone" inputmode="tel" value="${esc(v.techPhone)}"></label>
+      <label>ค่าใช้จ่าย (บาท)<input id="histCost" type="number" min="0" step="0.01" value="${Number(v.cost||0)}"></label>
+      <label>สถานะงาน<select id="histStatus"><option value="done" ${v.status==='done'?'selected':''}>เสร็จแล้ว</option><option value="pending" ${v.status==='pending'?'selected':''}>รอดำเนินการ</option><option value="cancel" ${v.status==='cancel'?'selected':''}>ยกเลิก</option></select></label>
+      <label style="grid-column:1/-1">รายละเอียดงาน<textarea id="histDetail" rows="3" placeholder="เช่น ล้างคอยล์เย็น / แก้ไขน้ำหยด / เปลี่ยนคาปาซิเตอร์">${esc(v.detail)}</textarea></label>
+      <label style="grid-column:1/-1">หมายเหตุเพิ่มเติม<textarea id="histNotes" rows="2">${esc(v.notes)}</textarea></label>
+    </div>
+    <div class="dim" style="margin-top:8px">ถ้าบันทึกประเภท “ล้างแอร์” และสถานะ “เสร็จแล้ว” ระบบจะอัปเดตวันที่ล้างล่าสุดของเครื่องนั้นให้อัตโนมัติ</div>
+  </div><div class="modal-foot"><button class="btn btn-outline" onclick="closeModal()">ยกเลิก</button><button class="btn btn-green" onclick="saveAirHistory('${id}')">💾 บันทึกประวัติ</button></div></div></div>`;
+}
+function syncHistoryUnitFields(){
+  const id=document.getElementById('histAirId')?.value||'';
+  const a=state.airUnits.find(x=>x.id===id); if(!a) return;
+  const tn=document.getElementById('histTechName'), tp=document.getElementById('histTechPhone');
+  if(tn && !tn.value) tn.value=a.techName||'';
+  if(tp && !tp.value) tp.value=a.techPhone||'';
+}
+async function saveAirHistory(id=''){
+  const airId=document.getElementById('histAirId').value;
+  const unit=state.airUnits.find(x=>x.id===airId);
+  if(!unit){alert('กรุณาเลือกเครื่องแอร์');return;}
+  const workDate=document.getElementById('histDate').value;
+  if(!workDate){alert('กรุณาระบุวันที่ทำงาน');return;}
+  const existing=id?state.airHistory.find(x=>x.id===id):null;
+  const item=normalizeAirHistory({
+    ...(existing||{}),id:id||uid(),airId:unit.id,airCode:unit.code,dept:unit.dept,location:unit.location,
+    workDate,workType:document.getElementById('histType').value,
+    detail:document.getElementById('histDetail').value.trim(),
+    techName:document.getElementById('histTechName').value.trim(),
+    techPhone:document.getElementById('histTechPhone').value.trim(),
+    cost:Number(document.getElementById('histCost').value||0),
+    status:document.getElementById('histStatus').value,
+    notes:document.getElementById('histNotes').value.trim(),
+    createdAt:existing?.createdAt||new Date().toISOString()
+  });
+  if(existing) Object.assign(existing,item); else state.airHistory.push(item);
+
+  if(item.workType==='clean' && item.status==='done'){
+    unit.lastClean=item.workDate;
+    unit.updatedAt=new Date().toISOString();
+  }
+  if(item.workType==='repair'){
+    unit.condition=item.status==='pending'?'repair':'active';
+    unit.updatedAt=new Date().toISOString();
+  }
+
+  closeModal(); renderAir(); renderAirHistory();
+  try{
+    await saveDocument('airHistory',item);
+    if((item.workType==='clean'&&item.status==='done')||item.workType==='repair') await saveDocument('airUnits',unit);
+  }catch(err){handleFirebaseError('บันทึกประวัติงานแอร์',err);}
+}
+async function deleteAirHistory(id){
+  const h=state.airHistory.find(x=>x.id===id); if(!h) return;
+  if(!confirm(`ลบประวัติงาน ${h.airCode||''} วันที่ ${formatThaiDateAir(h.workDate)} ?`)) return;
+  const backup=state.airHistory.slice();
+  state.airHistory=state.airHistory.filter(x=>x.id!==id);
+  renderAirHistory();
+  try{await deleteDocument('airHistory',id);}
+  catch(err){state.airHistory=backup;renderAirHistory();handleFirebaseError('ลบประวัติงานแอร์',err);}
+}
 
 /* ============ RENDER: TODOS ============ */
 function priorityPill(p){
@@ -1361,7 +1746,8 @@ async function saveHoliday(){
 }
 
 /* ============ INIT ============ */
-function renderAll(){ renderTodos(); renderCalendar(); }
+function renderAll(){ renderTodos(); renderCalendar(); renderAir(); renderAirHistory();
+}
 fillYearFilter();
 renderAll();
 document.body.classList.add('auth-locked');
